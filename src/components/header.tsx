@@ -1,22 +1,23 @@
-import { useState } from 'react'
 import { motion } from 'framer-motion'
-import Navigation from '@/components/navigation'
 import Icon from '@/assets/finger-print-outline.svg'
 import MenuOpen from '@/assets/menu-outline.svg'
 import MenuClose from '@/assets/close-outline.svg'
+import { useAppDispatch, useAppSelector } from '@/app/redux-hooks'
+import { toggle } from '@/features/menu-slice'
 
 export default function MyHeader() {
-  const [isOpen, setIsOpen] = useState(false)
+  const dispatch = useAppDispatch()
+  const isOpen = useAppSelector(state => state.menu.isOpen)
 
   return (
     <>
       <header className='py-10'>
         <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
-          <nav className='relative z-50 flex justify-between'>
+          <nav className='relative flex justify-between'>
             <div className='flex items-center md:gap-x-12'>
               <a href='#' aria-label='Home' className='flex'>
                 <img src={Icon} className='h-auto w-7' />
-                <h2 className='p-1 font-mono text-2xl text-slate-950'>EcoAI</h2>
+                <h2 className='p-1 font-serif tracking-wide text-2xl text-slate-950'>EcoAI</h2>
               </a>
               <div className='hidden md:flex md:gap-x-6'>
                 <a
@@ -50,15 +51,15 @@ export default function MyHeader() {
               </div>
               <motion.a
                 href='#'
-                whileTap={{scale:0.95,transition:{duration:0.05} }}
+                whileTap={{ scale: 0.95, transition: { duration: 0.05 } }}
                 className='inline-flex transform items-center justify-center rounded-full bg-purple-600 px-4 py-2 text-sm font-semibold text-white duration-100 hover:bg-purple-700 focus:outline-none focus-visible:outline-2 focus-visible:outline-purple-600 active:bg-purple-600'
               >
                 <span>
                   Get started <span className='hidden lg:inline'>today</span>
                 </span>
               </motion.a>
-              <div className='md:hidden'>
-                <button onClick={() => setIsOpen(!isOpen)}>
+              <div className='md:hidden z-10'>
+                <button onClick={() => dispatch(toggle())}>
                   <img src={isOpen ? MenuClose : MenuOpen} className='h-7 w-auto' />
                 </button>
               </div>
@@ -66,7 +67,6 @@ export default function MyHeader() {
           </nav>
         </div>
       </header>
-      <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   )
 }
