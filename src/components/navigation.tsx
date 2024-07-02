@@ -2,7 +2,7 @@ import { motion, Variants } from 'framer-motion'
 
 const menu: Variants = {
   hidden: {
-    y: 0,
+    y: -20,
     opacity: 0,
   },
   visible: {
@@ -18,7 +18,7 @@ export default function Navigation({ isOpen }: { isOpen: boolean }) {
         initial='hidden'
         animate={isOpen ? 'visible' : 'hidden'}
         variants={menu}
-        className='bg-slate-50 fixed inset-x-1 top-20 z-10 mx-7 rounded-lg px-4 py-4 shadow-lg shadow-gray-300 ring-1 ring-gray-200 md:hidden'
+        className='fixed inset-x-1 top-20 z-10 mx-7 rounded-2xl bg-slate-50 px-4 py-4 shadow-lg shadow-gray-300 ring-1 ring-gray-200 md:hidden'
       >
         <motion.li className='transform rounded-lg px-3 py-3 text-lg tracking-widest text-slate-950 duration-75 active:bg-slate-100'>
           <a href='#'>物种识别</a>
