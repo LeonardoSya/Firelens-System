@@ -1,13 +1,24 @@
 import { createBrowserRouter } from 'react-router-dom'
 import ErrorPage from '@/routes/error-page'
-import HomePage from '@/pages/home-page'
+import Root from '@/pages/root'
+import Homepage from '@/pages/homepage'
+import MapView from '@/pages/map-view'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <HomePage />,
+    element: <Root />,
     errorElement: <ErrorPage />,
-    children: [{}],
+    children: [
+      {
+        path: '/',
+        element: <Homepage />,
+      },
+      {
+        path: 'map',
+        element: <MapView />,
+      },
+    ],
   },
   {
     path: '*',
