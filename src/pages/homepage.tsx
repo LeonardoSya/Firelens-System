@@ -2,8 +2,8 @@ import { motion } from 'framer-motion'
 
 export default function Homepage() {
   return (
-    <main className='w-full flex-auto'>
-      <div className='mx-auto mt-24 max-w-7xl px-6 sm:mt-32 md:mt-48 lg:px-8'>
+    <main className='w-full'>
+      <div className='mx-auto max-w-7xl px-6 pt-24 sm:pt-32 md:pt-48 lg:px-8'>
         <div className='mx-auto max-w-2xl lg:max-w-none'>
           <motion.div
             className='max-w-3xl'
@@ -11,11 +11,11 @@ export default function Homepage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            <h1 className='text-balance font-serif text-5xl font-medium tracking-tight text-neutral-950 sm:text-7xl'>
+            <h1 className='text-balance font-serif text-5xl font-medium text-neutral-950 dark:text-gray-100 tracking-tight sm:text-7xl'>
               Deep Learning-Based Multimodal Species Intelligence Identification
               {/* 基于深度学习的多模态物种智能识别 */}
             </h1>
-            <p className='mt-6 font-serif text-xl text-neutral-600'>
+            <p className='mt-6 font-serif text-xl text-neutral-600 dark:text-slate-400'>
               We develop multimodal neural networks for species recognition, utilizing
               EfficientNet-B0 and BirdNET-Analyzer with transfer learning. Our models use frame
               differencing and weighted fusion to enhance accuracy across image, audio, and video
@@ -31,11 +31,11 @@ export default function Homepage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            <h1 className='text-balance font-serif text-5xl font-medium tracking-tight text-neutral-950 sm:text-7xl'>
+            <h1 className='text-balance font-serif text-5xl font-medium text-neutral-950 dark:text-gray-100 tracking-tight sm:text-7xl'>
               Deep Learning-Based Multimodal Species Intelligence Identification
               {/* 基于深度学习的多模态物种智能识别 */}
             </h1>
-            <p className='mt-6 font-serif text-xl text-neutral-600'>
+            <p className='mt-6 font-serif text-xl text-neutral-600 dark:text-slate-400'>
               We develop multimodal neural networks for species recognition, utilizing
               EfficientNet-B0 and BirdNET-Analyzer with transfer learning. Our models use frame
               differencing and weighted fusion to enhance accuracy across image, audio, and video

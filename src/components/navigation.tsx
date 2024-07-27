@@ -22,10 +22,10 @@ export default function Navigation({ isOpen }: { isOpen: boolean }) {
         className='fixed inset-x-1 top-20 z-10 mx-7 rounded-2xl bg-slate-50 px-4 py-4 shadow-lg shadow-gray-300 ring-1 ring-gray-200 md:hidden'
       >
         <motion.li className='transform rounded-lg px-3 py-3 text-lg tracking-widest text-slate-950 duration-75 active:bg-slate-100'>
-          <Link to='/'>物种识别</Link>
+          <Link to='/'>产品介绍</Link>
         </motion.li>
         <motion.li className='transform rounded-lg px-3 py-3 text-lg tracking-widest text-slate-950 duration-75 active:bg-slate-100'>
-          <Link to='/map'>探索地图</Link>
+          <Link to='/map'>动态监测</Link>
         </motion.li>
         <motion.li className='transform rounded-lg px-3 py-3 text-lg tracking-widest text-slate-950 duration-75 active:bg-slate-100'>
           <Link to='/'>社区视野</Link>

@@ -3,6 +3,7 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   relative: true,
   theme: {
+    darkMode: 'selector',
     extend: {
       borderRadius: {
         't-4xl': '3rem',
