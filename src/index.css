@@ -26,3 +26,10 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+
+@layer components {
+    .earth {
+      @apply  flex h-screen 
+              justify-center
+    }
+}
