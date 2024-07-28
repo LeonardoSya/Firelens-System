@@ -80,7 +80,7 @@ export default function Root() {
                 <Link
                   to='/'
                   key={index}
-                  className='transform border-neutral-800 duration-75 even:border-y hover:bg-neutral-900 sm:py-6 sm:odd:border-y sm:odd:border-r'
+                  className='transform border-gray-800 duration-75 even:border-y hover:bg-gray-900 sm:py-6 sm:odd:border-y sm:odd:border-r'
                 >
                   <li className='my-auto p-5 font-tiny text-3xl font-bold tracking-wide text-white sm:px-6 md:text-4xl lg:px-8'>
                     {item}
@@ -145,7 +145,7 @@ export default function Root() {
       </header>
 
       <motion.div
-        className='h-full w-full rounded-t-4xl rounded-b-none border-t-2 dark:border-orange-700 bg-white dark:bg-gray-950'
+        className='h-full w-full rounded-t-4xl rounded-b-none border-t-2 bg-white dark:border-orange-700 dark:bg-gray-950'
         initial={{ y: 30 }}
         animate={headerAnimation}
         transition={{

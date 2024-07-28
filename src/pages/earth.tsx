@@ -45,7 +45,7 @@ export function Earth(props) {
     <>
       {/* <ambientLight intensity={1} /> */}
       {/* 点光源 */}
-      <pointLight color='#f6f3ea' position={[4, 0, 4]} intensity={1.6} />
+      <pointLight color='#f6f3ea' position={[4, 0, 4]} intensity={1.4} />
       <Stars radius={200} depth={90} count={10000} factor={8} saturation={0} fade={true} />
       <mesh ref={cloudsRef}>
         <sphereGeometry args={[1.005, 32, 32]} />

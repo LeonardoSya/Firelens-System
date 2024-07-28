@@ -11,7 +11,7 @@ export default function Homepage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            <h1 className='text-balance font-serif text-5xl font-medium text-neutral-950 dark:text-gray-100 tracking-tight sm:text-7xl'>
+            <h1 className='text-balance font-serif text-5xl font-medium tracking-tight text-neutral-950 sm:text-7xl dark:text-gray-100'>
               Deep Learning-Based Multimodal Species Intelligence Identification
               {/* 基于深度学习的多模态物种智能识别 */}
             </h1>
@@ -31,7 +31,7 @@ export default function Homepage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            <h1 className='text-balance font-serif text-5xl font-medium text-neutral-950 dark:text-gray-100 tracking-tight sm:text-7xl'>
+            <h1 className='text-balance font-serif text-5xl font-medium tracking-tight text-neutral-950 sm:text-7xl dark:text-gray-100'>
               Deep Learning-Based Multimodal Species Intelligence Identification
               {/* 基于深度学习的多模态物种智能识别 */}
             </h1>
