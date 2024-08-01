@@ -266,7 +266,7 @@ export default function Root() {
                     {isOpen ? (
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
-                        className='h-7 w-auto text-slate-950'
+                        className='h-7 w-auto text-slate-950 dark:text-neutral-50'
                         viewBox='0 0 512 512'
                       >
                         <path
@@ -281,7 +281,7 @@ export default function Root() {
                     ) : (
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
-                        className='h-7 w-auto text-slate-950'
+                        className='h-7 w-auto text-slate-950 dark:text-neutral-50'
                         viewBox='0 0 512 512'
                       >
                         <path
@@ -303,6 +303,7 @@ export default function Root() {
         <Navigation isOpen={isOpen} />
         {isOpen && (
           <div
+            onClick={() => dispatch(toggle())}
             className={`z-5 fixed inset-0 ${!isHeaderCollapsed && 'mt-4'} rounded-t-4xl bg-gray-900/50`}
           />
         )}

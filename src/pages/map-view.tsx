@@ -26,7 +26,7 @@ const SideMenu = () => {
 
   return (
     <div
-      className={`absolute -left-64 top-48 w-64 rounded-md bg-white p-4 transition duration-300 ease-in-out dark:bg-gradient-to-t dark:from-gray-800 dark:to-gray-950 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      className={`absolute -left-64 top-48 w-64 rounded-xl bg-white p-4 transition duration-300 ease-in-out dark:bg-gradient-to-t dark:from-gray-800 dark:to-gray-950 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
     >
       <div className='flex items-center gap-x-5 px-3 py-4'>
         <span>
@@ -73,7 +73,7 @@ const SideMenu = () => {
       </div>
       <motion.ul className='transform duration-150'>
         {isDateOpen &&
-          ['2024-6', '2024-5', '2024-4', '2024-3', '2024-2'].map((item, i) => (
+          ['2024-7', '2024-6', '2024-5', '2024-4', '2024-3', '2024-2'].map((item, i) => (
             <motion.li
               key={i}
               initial={{
