@@ -3,8 +3,7 @@ import mapboxgl from 'mapbox-gl'
 import GlobeMinimap from 'mapbox-gl-globe-minimap'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-mapboxgl.accessToken =
-  'pk.eyJ1Ijoic3lhMDcyNCIsImEiOiJjbHpsY3hlbHUwMWxiMmpxcnNqaWJsb3gxIn0.oklNauuQwt0D1iXPtfH0JA'
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
 
 export default function MyMap() {
   const mapContainer = useRef(null)
