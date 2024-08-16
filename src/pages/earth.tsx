@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useFrame, useLoader } from '@react-three/fiber'
 import { OrbitControls, Stars } from '@react-three/drei'
 import { TextureLoader } from 'three'
@@ -19,16 +19,17 @@ export function Earth(props) {
 
   const earthRef = useRef<THREE.Mesh>(null)
   const cloudsRef = useRef<THREE.Mesh>(null)
+  const [earthScale, setEarthScale] = useState([2, 2, 2])
 
   useEffect(() => {
     // 设置初始缩放比例
     if (earthRef.current) {
-      earthRef.current.scale.set(2, 2, 2)
+      earthRef.current.scale.set(earthScale[0], earthScale[1], earthScale[2])
     }
     if (cloudsRef.current) {
-      cloudsRef.current.scale.set(2, 2, 2)
+      cloudsRef.current.scale.set(earthScale[0], earthScale[1], earthScale[2])
     }
-  }, [])
+  }, [earthScale])
 
   useFrame(({ clock }) => {
     const elapsedTime = clock.getElapsedTime() // 获取流逝的时间，实现地球和云层转动效果

@@ -13,7 +13,6 @@ const menu: Variants = {
 }
 
 export default function Navigation({ isOpen }: { isOpen: boolean }) {
-  
   return (
     <>
       <motion.ul

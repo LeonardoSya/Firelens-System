@@ -27,9 +27,9 @@ h1 {
   line-height: 1.1;
 }
 
-@layer components {
+/* @layer components {
     .earth {
       @apply  flex h-screen 
               justify-center
     }
-}
+} */

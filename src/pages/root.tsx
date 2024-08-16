@@ -26,7 +26,7 @@ export default function Root() {
   }, [isHeaderCollapsed])
 
   return (
-    <div className='bg-neutral-950 pt-4 dark:bg-gray-900 dark:pt-6'>
+    <div className='bg-neutral-950 pt-6 dark:bg-gray-900'>
       {/* back-header */}
       <header
         className={`-z-5 absolute w-full bg-neutral-950 from-gray-900 to-gray-950 dark:bg-gradient-to-b ${!isHeaderCollapsed && 'hidden'} h-full`}

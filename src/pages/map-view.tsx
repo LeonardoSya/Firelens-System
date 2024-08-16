@@ -1,17 +1,19 @@
 import { useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Earth } from '@/pages/earth'
-import '../index.css'
 import { motion } from 'framer-motion'
+import MyMap from '@/pages/map'
+// import '../index.css'
 
 export default function MapView() {
   return (
     <>
-      <div className='earth bg-black'>
+      {/* <div className='earth bg-black'>
         <Canvas>
           <Earth />
         </Canvas>
-      </div>
+      </div> */}
+      <MyMap />
       <div>
         <SideMenu />
       </div>
@@ -26,7 +28,7 @@ const SideMenu = () => {
 
   return (
     <div
-      className={`absolute -left-64 top-48 w-64 rounded-xl bg-white p-4 transition duration-300 ease-in-out dark:bg-gradient-to-t dark:from-gray-800 dark:to-gray-950 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      className={`absolute -left-56 top-48 w-56 rounded-r-xl bg-white p-4 transition duration-300 ease-in-out dark:bg-gradient-to-t dark:from-gray-800 dark:to-gray-950 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
     >
       <div className='flex items-center gap-x-5 px-3 py-4'>
         <span>
@@ -64,9 +66,9 @@ const SideMenu = () => {
         >
           <path
             fill='none'
-            stroke-linecap='round'
-            stroke-linejoin='round'
-            stroke-width='48'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth='48'
             d='M112 328l144-144 144 144'
           />
         </svg>
@@ -97,9 +99,9 @@ const SideMenu = () => {
               >
                 <path
                   fill='none'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                  stroke-width='48'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth='48'
                   d='M184 112l144 144-144 144'
                 />
               </svg>
@@ -127,9 +129,9 @@ const SideMenu = () => {
         >
           <path
             fill='none'
-            stroke-linecap='round'
-            stroke-linejoin='round'
-            stroke-width='48'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth='48'
             d='M112 328l144-144 144 144'
           />
         </svg>
@@ -160,9 +162,9 @@ const SideMenu = () => {
               >
                 <path
                   fill='none'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                  stroke-width='48'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth='48'
                   d='M184 112l144 144-144 144'
                 />
               </svg>
