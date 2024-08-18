@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { Earth } from '@/pages/earth'
+// import { Canvas } from '@react-three/fiber'
+// import { Earth } from '@/pages/earth'
 import { motion } from 'framer-motion'
-import MyMap from '@/pages/map'
+import MyMap from './map'
 // import '../index.css'
 
 export default function MapView() {
@@ -28,7 +28,7 @@ const SideMenu = () => {
 
   return (
     <div
-      className={`absolute -left-56 top-48 w-56 rounded-r-xl bg-white p-4 transition duration-300 ease-in-out dark:bg-gradient-to-t dark:from-gray-800 dark:to-gray-950 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      className={`absolute -left-56 top-60 w-56 rounded-r-xl bg-white p-4 transition duration-300 ease-in-out dark:bg-gradient-to-t dark:from-gray-800 dark:to-gray-950 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
     >
       <div className='flex items-center gap-x-5 px-3 py-4'>
         <span>

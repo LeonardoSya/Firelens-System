@@ -36,18 +36,14 @@ export default function Root() {
             {/* back-header-nav */}
             <nav className='relative flex justify-between'>
               <div className='flex items-center lg:gap-x-16'>
-                <Link
-                  to='/'
-                  aria-label='Home'
-                  className='flex transform items-end rounded-lg duration-75 focus-visible:outline-none focus-visible:outline-1 focus-visible:outline-slate-400 md:gap-x-2'
-                >
+                <div className='flex transform items-end rounded-lg duration-75 focus-visible:outline-none focus-visible:outline-1 focus-visible:outline-slate-400 md:gap-x-2'>
                   <h2 className='px-1 font-tiny text-3xl tracking-wide text-white lg:text-4xl'>
                     FIRELENS
                   </h2>
                   <h4 className='hidden font-serif text-lg text-white md:block'>
-                    web frontend created by LeonardoSya
+                    system created by LeonardoSya
                   </h4>
-                </Link>
+                </div>
               </div>
               <div className='flex items-center gap-x-4 md:gap-x-6'>
                 <a
