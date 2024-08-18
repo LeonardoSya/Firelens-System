@@ -50,9 +50,13 @@ export default function Root() {
                 </Link>
               </div>
               <div className='flex items-center gap-x-4 md:gap-x-6'>
-                <button className='inline-flex items-center justify-center rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-neutral-950 transition duration-200 hover:bg-neutral-200 active:bg-neutral-200 md:py-2'>
+                <a
+                  target='blank'
+                  href='https://github.com/LeonardoSya'
+                  className='inline-flex items-center justify-center rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-neutral-950 transition duration-200 hover:bg-neutral-200 active:bg-neutral-200 md:py-2'
+                >
                   Contact me
-                </button>
+                </a>
                 <button
                   onClick={() => setIsHeaderCollapsed(false)}
                   className={`inline-flex ${!isHeaderCollapsed && 'hidden'} items-center justify-center rounded-full p-1.5 transition duration-150 hover:bg-neutral-700/50 md:p-2`}
@@ -76,17 +80,42 @@ export default function Root() {
         <div className='mx-auto max-w-none'>
           <div className='mx-auto max-w-7xl'>
             <ul className='grid grid-cols-1 sm:grid-cols-2'>
-              {['My Work', 'About Me', 'My Process', 'Blog'].map((item, index) => (
-                <Link
-                  to='/'
-                  key={index}
-                  className='transform border-gray-800 duration-75 even:border-y hover:bg-gray-900 sm:py-6 sm:odd:border-y sm:odd:border-r'
-                >
-                  <li className='my-auto p-5 font-tiny text-3xl font-bold tracking-wide text-white sm:px-6 md:text-4xl lg:px-8'>
-                    {item}
-                  </li>
-                </Link>
-              ))}
+              <a
+                target='blank'
+                href='https://github.com/LeonardoSya/Firelens-System'
+                className='transform border-gray-800 duration-75 even:border-y hover:bg-gray-900 sm:py-6 sm:odd:border-y sm:odd:border-r'
+              >
+                <li className='my-auto p-5 font-tiny text-3xl font-bold tracking-wide text-white sm:px-6 md:text-4xl lg:px-8'>
+                  My Work
+                </li>
+              </a>
+              <a
+                target='blank'
+                href='https://github.com/LeonardoSya'
+                className='transform border-gray-800 duration-75 even:border-y hover:bg-gray-900 sm:py-6 sm:odd:border-y sm:odd:border-r'
+              >
+                <li className='my-auto p-5 font-tiny text-3xl font-bold tracking-wide text-white sm:px-6 md:text-4xl lg:px-8'>
+                  About Me
+                </li>
+              </a>
+              <a
+                target='blank'
+                href='https://www.xiaohongshu.com/user/profile/633abb3e000000001901fd1e'
+                className='transform border-gray-800 duration-75 even:border-y hover:bg-gray-900 sm:py-6 sm:odd:border-y sm:odd:border-r'
+              >
+                <li className='my-auto p-5 font-tiny text-3xl font-bold tracking-wide text-white sm:px-6 md:text-4xl lg:px-8'>
+                  My Process
+                </li>
+              </a>
+              <a
+                target='blank'
+                href='https://github.com/LeonardoSya'
+                className='transform border-gray-800 duration-75 even:border-y hover:bg-gray-900 sm:py-6 sm:odd:border-y sm:odd:border-r'
+              >
+                <li className='my-auto p-5 font-tiny text-3xl font-bold tracking-wide text-white sm:px-6 md:text-4xl lg:px-8'>
+                  Blog
+                </li>
+              </a>
             </ul>
           </div>
         </div>
@@ -94,8 +123,9 @@ export default function Root() {
           <h2 className='font-tiny text-xl'>Follow me</h2>
           <ul role='list' className='mt-6 flex gap-x-8 text-white'>
             <li>
-              <Link
-                to='https://github.com/LeonardoSya'
+              <a
+                target='blank'
+                href='https://github.com/LeonardoSya'
                 aria-label='github'
                 className='transition-none hover:text-neutral-200'
               >
@@ -107,7 +137,7 @@ export default function Root() {
                 >
                   <path d='M256 32C132.3 32 32 134.9 32 261.7c0 101.5 64.2 187.5 153.2 217.9a17.56 17.56 0 003.8.4c8.3 0 11.5-6.1 11.5-11.4 0-5.5-.2-19.9-.3-39.1a102.4 102.4 0 01-22.6 2.7c-43.1 0-52.9-33.5-52.9-33.5-10.2-26.5-24.9-33.6-24.9-33.6-19.5-13.7-.1-14.1 1.4-14.1h.1c22.5 2 34.3 23.8 34.3 23.8 11.2 19.6 26.2 25.1 39.6 25.1a63 63 0 0025.6-6c2-14.8 7.8-24.9 14.2-30.7-49.7-5.8-102-25.5-102-113.5 0-25.1 8.7-45.6 23-61.6-2.3-5.8-10-29.2 2.2-60.8a18.64 18.64 0 015-.5c8.1 0 26.4 3.1 56.6 24.1a208.21 208.21 0 01112.2 0c30.2-21 48.5-24.1 56.6-24.1a18.64 18.64 0 015 .5c12.2 31.6 4.5 55 2.2 60.8 14.3 16.1 23 36.6 23 61.6 0 88.2-52.4 107.6-102.3 113.3 8 7.1 15.2 21.1 15.2 42.5 0 30.7-.3 55.5-.3 63 0 5.4 3.1 11.5 11.4 11.5a19.35 19.35 0 004-.4C415.9 449.2 480 363.1 480 261.7 480 134.9 379.7 32 256 32z' />
                 </svg>
-              </Link>
+              </a>
             </li>
             <li>
               <Link to='/' aria-label='github' className='transition-none hover:text-neutral-200'>
