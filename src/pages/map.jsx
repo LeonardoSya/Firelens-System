@@ -11,10 +11,8 @@ export default function MyMap() {
   const [lng, setLng] = useState(116.27)
   const [lat, setLat] = useState(40)
   const [zoom, setZoom] = useState(13)
-  // const [style, setStyle] = useState('mapbox://styles/mapbox/standard')
-  const [style, setStyle] = useState('mapbox://styles/sya0724/clzy6rx2f005c01ps82y69wdb')
-  const geojsonUrl =
-    '../../data/Global_VNP14IMGTDL_NRT_FireData_2024-07-14_to_2024-08-14.geojson'
+  const [style, setStyle] = useState('mapbox://styles/mapbox/standard')
+  const geojsonUrl = '../../data/Global_VNP14IMGTDL_NRT_FireData_2024-07-14_to_2024-08-14.geojson'
 
   useEffect(() => {
     // 地图初始化
@@ -41,26 +39,30 @@ export default function MyMap() {
       }),
     )
 
-    // map.current.on('load', () => {
-    //   fetch(geojsonUrl)
-    //     .then(response => response.json())
-    //     .then(data => {
-    //       map.current.addSource('firePoints', {
-    //         type: 'geojson',
-    //         data: data,
-    //       })
-    //       map.current.addLayer({
-    //         id: 'firePointsLayer',
-    //         type: 'circle',
-    //         source: 'firePoints',
-    //         paint: {
-    //           'circle-radius': 6,
-    //           'circle-color': '#FF4500',
-    //           'fill-emissive-strength': 1,
-    //         },
-    //       })
-    //     })
-    // })
+    map.current.on('load', () => {
+      fetch(geojsonUrl)
+        .then(response => response.json())
+        .then(data => {
+          map.current.addSource('firePoints', {
+            type: 'geojson',
+            data: data,
+          })
+          map.current.addLayer({
+            id: 'firePointsLayer',
+            type: 'circle',
+            source: 'firePoints',
+            paint: {
+              'circle-radius': 7,
+              'circle-color': '#e20303',
+              'circle-blur': 0.4,
+              'circle-stroke-color': '#333333',
+              'circle-stroke-width': 1,
+              'circle-opacity': 0.9,
+              'circle-emissive-strength': 1,
+            },
+          })
+        })
+    })
 
     // 地图样式
     map.current.on('style.load', () => {
