@@ -1,22 +1,14 @@
 import { useState } from 'react'
-// import { Canvas } from '@react-three/fiber'
-// import { Earth } from '@/pages/earth'
 import { motion } from 'framer-motion'
+import { useAppDispatch, useAppSelector } from '@/app/redux-hooks'
+import { setMonth } from '@/features/filter-slice'
 import MyMap from './map'
-// import '../index.css'
 
 export default function MapView() {
   return (
     <>
-      {/* <div className='earth bg-black'>
-        <Canvas>
-          <Earth />
-        </Canvas>
-      </div> */}
       <MyMap />
-      <div>
-        <SideMenu />
-      </div>
+      <SideMenu />
     </>
   )
 }
@@ -25,6 +17,22 @@ const SideMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isDateOpen, setIsDateOpen] = useState(true)
   const [isFRPOpen, setIsFRPOpen] = useState(true)
+  const dispatch = useAppDispatch()
+  const selectedMonth = useAppSelector(state => state.filter.month)
+
+  const dates = [
+    { label: '2024-08', value: 'EastAsia_VNP14IMGTDL_NRT_FireData_2024-07-14_to_2024-08-14' },
+    { label: '2024-06', value: 'EastAsia_VNP14IMGTDL_NRT_FireData_2024-05-14_to_2024-06-14' },
+    { label: '2024-05', value: 'EastAsia_VNP14IMGTDL_NRT_FireData_2024-04-14_to_2024-05-14' },
+    { label: '2024-04', value: 'EastAsia_VNP14IMGTDL_NRT_FireData_2024-03-14_to_2024-04-14' },
+    { label: '2024-03', value: 'EastAsia_VNP14IMGTDL_NRT_FireData_2024-02-14_to_2024-03-14' },
+    { label: '2024-02', value: 'EastAsia_VNP14IMGTDL_NRT_FireData_2024-01-14_to_2024-02-14' },
+    { label: '2024-01', value: 'EastAsia_VNP14IMGTDL_NRT_FireData_2023-12-14_to_2024-01-14' },
+  ]
+
+  const handleDateClick = (value: any) => {
+    dispatch(setMonth(value))
+  }
 
   return (
     <div
@@ -75,7 +83,7 @@ const SideMenu = () => {
       </div>
       <motion.ul className='transform duration-150'>
         {isDateOpen &&
-          ['2024-7', '2024-6', '2024-5', '2024-4', '2024-3', '2024-2'].map((item, i) => (
+          dates.map((date, i) => (
             <motion.li
               key={i}
               initial={{
@@ -90,7 +98,10 @@ const SideMenu = () => {
                 delay: i * 0.05,
                 duration: 0.2,
               }}
-              className='flex cursor-pointer gap-x-5 rounded-md p-2 text-neutral-700 hover:bg-neutral-100 dark:hover:bg-gray-900'
+              className={`flex transform cursor-pointer gap-x-5 rounded-md p-2 text-neutral-700 duration-75 hover:bg-neutral-100 dark:hover:bg-gray-900 ${
+                selectedMonth === date.value ? 'bg-neutral-200 dark:bg-gray-700' : ''
+              }`}
+              onClick={() => handleDateClick(date.value)}
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -105,10 +116,11 @@ const SideMenu = () => {
                   d='M184 112l144 144-144 144'
                 />
               </svg>
-              <span className='text-sm text-neutral-700 dark:text-neutral-200'>{item}</span>
+              <span className='text-sm text-neutral-700 dark:text-neutral-200'>{date.label}</span>
             </motion.li>
           ))}
       </motion.ul>
+
       {/* 根据灾情筛选 */}
       <div
         onClick={() => setIsFRPOpen(!isFRPOpen)}

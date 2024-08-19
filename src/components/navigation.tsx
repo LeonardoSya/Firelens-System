@@ -25,7 +25,7 @@ export default function Navigation({ isOpen }: { isOpen: boolean }) {
           <Link to='/'>产品介绍</Link>
         </motion.li>
         <motion.li className='transform rounded-lg px-3 py-3 text-lg tracking-widest text-slate-950 duration-75 active:bg-slate-100 dark:font-semibold dark:text-neutral-200 dark:active:bg-gray-900'>
-          <Link to='/map'>动态监测</Link>
+          <Link to='/map'>地图中台</Link>
         </motion.li>
         <motion.li className='transform rounded-lg px-3 py-3 text-lg tracking-widest text-slate-950 duration-75 active:bg-slate-100 dark:font-semibold dark:text-neutral-200 dark:active:bg-gray-900'>
           <Link to='/'>社区视野</Link>

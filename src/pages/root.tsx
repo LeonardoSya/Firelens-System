@@ -254,7 +254,7 @@ export default function Root() {
                       variants={itemVariants}
                       className='inline-block transform cursor-pointer rounded-lg px-2 py-1 tracking-widest text-slate-700 duration-75 hover:bg-slate-100 focus-visible:outline-none focus-visible:outline-1 focus-visible:outline-slate-400 dark:font-semibold dark:text-slate-300 dark:hover:bg-gray-950 dark:hover:text-white'
                     >
-                      动态监测
+                      地图中台
                     </motion.div>
                   </Link>
                   <Link to='/'>
