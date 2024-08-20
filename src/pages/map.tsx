@@ -4,6 +4,7 @@ import mapboxgl from 'mapbox-gl' // @ts-ignore
 import GlobeMinimap from 'mapbox-gl-globe-minimap' // @ts-ignore
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
 import { useAppSelector } from '@/app/redux-hooks'
+import { selectDayNight } from '@/features/filter-slice'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
 
@@ -29,6 +30,7 @@ export default function MyMap() {
   const [currentId, setCurrentId] = useState(0)
   const [style, setStyle] = useState('mapbox://styles/mapbox/standard')
   const month = useAppSelector(state => state.filter.month)
+  const dayNight = useAppSelector(selectDayNight)
   const geojsonUrl = `../../data/${month}.geojson`
 
   // 初始化地图
@@ -94,12 +96,22 @@ export default function MyMap() {
       const response = await fetch(geojsonUrl)
       const data = await response.json()
 
+      const filteredData = {
+        ...data,
+        features: data.features.filter((feature: { properties: { DayNight: number } }) => {
+          if (dayNight.day && dayNight.night) return true
+          if (dayNight.day) return feature.properties.DayNight === 100
+          if (dayNight.night) return feature.properties.DayNight === 0
+          return false
+        }),
+      }
+
       if (map.current.getSource('firePoints')) {
         // 若数据源已存在，使用setData更新数据
-        map.current.getSource('firePoints').setData(data)
+        map.current.getSource('firePoints').setData(filteredData)
       } else {
         // 若不存在，创建新的数据源和图层
-        const frpValues = data.features.map(
+        const frpValues = filteredData.features.map(
           (feature: { properties: { frp: number } }) => feature.properties.frp,
         )
         const maxFrp = Math.max(...frpValues)
@@ -107,7 +119,7 @@ export default function MyMap() {
 
         map.current.addSource('firePoints', {
           type: 'geojson',
-          data: data,
+          data: filteredData,
         })
 
         map.current.addLayer({
@@ -154,7 +166,7 @@ export default function MyMap() {
             center: coordinates,
             zoom: 9,
             duration: 2000,
-            pitch: 0,
+            pitch: 30,
           })
         })
       }
@@ -169,11 +181,7 @@ export default function MyMap() {
         map.current.off('click', 'firePointsLayer')
       }
     }
-  }, [geojsonUrl, isLoaded])
-
-  useEffect(() => {
-    console.log('isLoaded: ', isLoaded)
-  }, [isLoaded])
+  }, [geojsonUrl, isLoaded, dayNight])
 
   return (
     <>
