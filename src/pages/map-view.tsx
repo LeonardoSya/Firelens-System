@@ -260,9 +260,9 @@ const SideMenu = () => {
               }}
               className={`flex cursor-pointer gap-x-5 rounded-md p-2 ${
                 (i === 0 && dayNight.day) || (i === 1 && dayNight.night)
-                  ? 'bg-neutral-100 hover:bg-neutral-200 dark:bg-gray-700 dark:hover:bg-gray-700'
-                  : 'text-neutral-700 dark:text-neutral-100'
-              } transform duration-150 hover:bg-neutral-100 dark:hover:bg-gray-700`}
+                  ? 'bg-neutral-200 hover:bg-neutral-200 dark:bg-gray-700 dark:hover:bg-gray-700'
+                  : 'text-neutral-700 dark:text-neutral-200'
+              } transform duration-150 hover:bg-neutral-100 dark:hover:bg-gray-800`}
               onClick={() => handleDayNightClick(i)}
             >
               <svg

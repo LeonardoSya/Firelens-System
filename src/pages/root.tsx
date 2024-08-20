@@ -276,7 +276,7 @@ export default function Root() {
                     Sign in
                   </Link>
                 </motion.div>
-                <Link to='/map'>
+                <Link to='/'>
                   <motion.div
                     variants={itemVariants}
                     whileTap={{ scale: 0.95, transition: { duration: 0.05 } }}
