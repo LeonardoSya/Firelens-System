@@ -14,5 +14,8 @@ yarn dev
 
 ![image](https://github.com/user-attachments/assets/cde8fb0a-63e6-4450-b72b-b2942e8968e8)
  --- 
-![image](https://github.com/user-attachments/assets/f2efa9c5-7f98-4c37-855b-e39fefca3a1b)
+![image](https://github.com/user-attachments/assets/158191eb-9dc4-47ec-8906-b0bb485cd499)
+---
+![image](https://github.com/user-attachments/assets/d9aea2dd-59c3-4ccd-8acd-e34ce880918e)
+
 
