@@ -386,9 +386,9 @@ export default function Root() {
           />
         )}
 
-        <body className='from-gray-950 to-gray-900 dark:bg-gradient-to-b'>
+        <div className='from-gray-950 to-gray-900 dark:bg-gradient-to-b'>
           <Outlet />
-        </body>
+        </div>
       </motion.div>
     </div>
   )
