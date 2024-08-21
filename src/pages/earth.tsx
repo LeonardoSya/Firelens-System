@@ -9,7 +9,7 @@ import EarthNormalMap from '@/assets/textures/8k_earth_normal_map.jpg'
 import EarthSpecularMap from '@/assets/textures/8k_earth_specular_map.jpg'
 import EarthCloudsMap from '@/assets/textures/8k_earth_clouds.jpg'
 
-export function Earth(props) {
+export function Earth(props: any) {
   const [colorMap, normalMap, specularMap, cloudsMap] = useLoader(TextureLoader, [
     EarthDayMap, // 日地图
     EarthNormalMap, // 法线贴图
@@ -58,8 +58,10 @@ export function Earth(props) {
           side={THREE.DoubleSide}
         />
       </mesh>
+      {/* @ts-ignore */}
       <mesh ref={earthRef} className='absolute flex h-80 w-80 shadow-inner'>
         <sphereGeometry args={[1, 32, 32]} />
+        {/* @ts-ignore */}
         <meshPhongMaterial specular specularMap={specularMap} />
         <meshStandardMaterial
           map={colorMap}
