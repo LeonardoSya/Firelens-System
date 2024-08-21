@@ -276,7 +276,7 @@ export default function Root() {
                     Sign in
                   </Link>
                 </motion.div>
-                <Link to='/'>
+                <Link to='/map'>
                   <motion.div
                     variants={itemVariants}
                     whileTap={{ scale: 0.95, transition: { duration: 0.05 } }}
@@ -386,7 +386,7 @@ export default function Root() {
           />
         )}
 
-        <div className='from-gray-950 to-gray-900 dark:bg-gradient-to-b'>
+        <div className='h-full from-gray-950 to-gray-900 dark:bg-gradient-to-b'>
           <Outlet />
         </div>
       </motion.div>
