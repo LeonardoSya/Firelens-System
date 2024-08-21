@@ -8,6 +8,32 @@ import { selectDayNight } from '@/features/filter-slice'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
 
+interface FeatureProperties {
+  Bright_ti5: number;
+  DayNight: number;
+  confidence: number;
+  fire_point: number;
+  frp: number;
+}
+
+interface Feature {
+  type: 'Feature';
+  geometry: {
+    geodesic: boolean,
+    type: 'Point' | 'LineString' | 'Polygon',
+    coordinates: [number, number],
+  };
+  id: string;
+  properties: FeatureProperties;
+}
+
+interface GeoData {
+  type: 'FeatureCollection';
+  features: Feature[];
+  date: string;
+  _id: string;
+}
+
 const listItemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 },
@@ -29,9 +55,8 @@ export default function MyMap() {
   const [currentBright, setCurrentBright] = useState(0)
   const [currentId, setCurrentId] = useState(0)
   const [style, setStyle] = useState('mapbox://styles/mapbox/standard')
-  const month = useAppSelector(state => state.filter.month)
+  const date = useAppSelector(state => state.filter.date)
   const dayNight = useAppSelector(selectDayNight)
-  const geojsonUrl = `../../data/${month}.geojson`
 
   // 初始化地图
   useEffect(() => {
@@ -92,26 +117,45 @@ export default function MyMap() {
   useEffect(() => {
     if (!map.current || !isLoaded) return
 
-    const updateData = async () => {
-      const response = await fetch(geojsonUrl)
-      const data = await response.json()
+    // 获取数据
+    const fetchData = async (
+      date: String,
+      dayNight: { day: boolean, night: boolean },
+    ): Promise<GeoData | null> => {
+      const dateQuery = `date=${date}`
+      const dayNightQuery = `day=${dayNight.day}&night=${dayNight.night}`
 
-      const filteredData = {
-        ...data,
-        features: data.features.filter((feature: { properties: { DayNight: number } }) => {
-          if (dayNight.day && dayNight.night) return true
-          if (dayNight.day) return feature.properties.DayNight === 100
-          if (dayNight.night) return feature.properties.DayNight === 0
-          return false
-        }),
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/mapdata?${dayNightQuery}&${dateQuery}`,
+        )
+        const dataArray: GeoData[] = await response.json()
+        const data = dataArray[0]
+
+        if (!data.features || !Array.isArray(data.features)) {
+          console.error('Invalid data structure:', data)
+          return null
+        }
+
+        return data
+      } catch (error) {
+        console.error('Error fetching data:', error)
+        return null
       }
+    }
+
+    // 渲染数据
+    const updateData = async () => {
+      const data = await fetchData(date, dayNight)
+
+      if (!data) return
 
       if (map.current.getSource('firePoints')) {
         // 若数据源已存在，使用setData更新数据
-        map.current.getSource('firePoints').setData(filteredData)
+        map.current.getSource('firePoints').setData(data)
       } else {
         // 若不存在，创建新的数据源和图层
-        const frpValues = filteredData.features.map(
+        const frpValues = data.features.map(
           (feature: { properties: { frp: number } }) => feature.properties.frp,
         )
         const maxFrp = Math.max(...frpValues)
@@ -119,7 +163,7 @@ export default function MyMap() {
 
         map.current.addSource('firePoints', {
           type: 'geojson',
-          data: filteredData,
+          data,
         })
 
         map.current.addLayer({
@@ -181,7 +225,7 @@ export default function MyMap() {
         map.current.off('click', 'firePointsLayer')
       }
     }
-  }, [geojsonUrl, isLoaded, dayNight])
+  }, [date, isLoaded, dayNight])
 
   return (
     <>

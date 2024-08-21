@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useAppDispatch, useAppSelector } from '@/app/redux-hooks'
 import { RootState } from '@/app/store'
-import { setMonth, setDay, setNight, selectDayNight } from '@/features/filter-slice'
+import { setDate, setDay, setNight, selectDayNight } from '@/features/filter-slice'
 import MyMap from './map'
 
 export default function MapView() {
@@ -19,22 +19,22 @@ const SideMenu = () => {
   const [itemOpen, setItemOpen] = useState(1)
   const dispatch = useAppDispatch()
   const dayNight = useAppSelector(selectDayNight)
-  const selectMonth = useAppSelector((state: RootState) => state.filter.month)
+  const selectDate = useAppSelector((state: RootState) => state.filter.date)
 
   const dates = [
-    { label: '2024-08', value: 'EastAsia_VNP14IMGTDL_NRT_FireData_2024-07-14_to_2024-08-14' },
-    { label: '2024-06', value: 'EastAsia_VNP14IMGTDL_NRT_FireData_2024-05-14_to_2024-06-14' },
-    { label: '2024-05', value: 'EastAsia_VNP14IMGTDL_NRT_FireData_2024-04-14_to_2024-05-14' },
-    { label: '2024-04', value: 'EastAsia_VNP14IMGTDL_NRT_FireData_2024-03-14_to_2024-04-14' },
-    { label: '2024-03', value: 'EastAsia_VNP14IMGTDL_NRT_FireData_2024-02-14_to_2024-03-14' },
-    { label: '2024-02', value: 'EastAsia_VNP14IMGTDL_NRT_FireData_2024-01-14_to_2024-02-14' },
-    { label: '2024-01', value: 'EastAsia_VNP14IMGTDL_NRT_FireData_2023-12-14_to_2024-01-14' },
+    { label: '2024-08', value: '20240714-20240814' },
+    { label: '2024-06', value: '20240514-20240614' },
+    { label: '2024-05', value: '20240414-20240514' },
+    { label: '2024-04', value: '20240314-20240414' },
+    { label: '2024-03', value: '20240214-20240314' },
+    { label: '2024-02', value: '20240114-20240214' },
+    { label: '2024-01', value: '20231214-20240114' },
   ]
 
   const dayNightLabels = ['白天', '夜晚']
 
   const handleDateClick = (value: any) => {
-    dispatch(setMonth(value))
+    dispatch(setDate(value))
   }
 
   const handleDayNightClick = (i: number) => {
@@ -109,7 +109,7 @@ const SideMenu = () => {
                 duration: 0.2,
               }}
               className={`flex transform cursor-pointer gap-x-5 rounded-md p-2 text-neutral-700 duration-75 hover:bg-neutral-100 dark:hover:bg-gray-900 ${
-                selectMonth === date.value
+                selectDate === date.value
                   ? 'bg-neutral-200 hover:bg-neutral-200 dark:bg-gray-700 dark:hover:bg-gray-700'
                   : ''
               }`}
