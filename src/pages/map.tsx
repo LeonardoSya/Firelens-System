@@ -7,6 +7,7 @@ import { useAppSelector } from '@/app/redux-hooks'
 import { selectDayNight } from '@/features/filter-slice'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
+import { features } from 'process'
 
 interface FeatureProperties {
   Bright_ti5: number;
@@ -122,15 +123,27 @@ export default function MyMap() {
       date: String,
       dayNight: { day: boolean, night: boolean },
     ): Promise<GeoData | null> => {
-      const dateQuery = `date=${date}`
-      const dayNightQuery = `day=${dayNight.day}&night=${dayNight.night}`
-
       try {
-        const response = await fetch(
-          `http://localhost:3001/api/mapdata?${dayNightQuery}&${dateQuery}`,
-        )
-        const dataArray: GeoData[] = await response.json()
-        const data = dataArray[0]
+        const response = await fetch(`http://localhost:3001/api/mapdata?&date=${date}`)
+        let data = await response.json()
+        let dataBefore = data[0]
+
+        data = {
+          ...dataBefore,
+          features: dataBefore.features.filter((feature: { properties: { DayNight: number } }) => {
+            const { DayNight } = feature.properties
+            const { day, night } = dayNight
+            if (day && night) {
+              return true
+            } else if (day) {
+              return DayNight === 100
+            } else if (night) {
+              return DayNight === 0
+            } else {
+              return false
+            }
+          }),
+        }
 
         if (!data.features || !Array.isArray(data.features)) {
           console.error('Invalid data structure:', data)
