@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import mapboxgl from 'mapbox-gl' // @ts-ignore
 import GlobeMinimap from 'mapbox-gl-globe-minimap' // @ts-ignore
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder' // @ts-ignore
-import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
+import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding'
 import { useAppSelector } from '@/app/redux-hooks'
 import { selectDayNight } from '@/features/filter-slice'
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -113,6 +113,18 @@ export default function MyMap() {
     })
 
     return () => map.current.remove()
+  }, [])
+
+  // 监听style更新底图样式
+  useEffect(() => {
+    if (map.current && isLoaded) {
+      map.current.setStyle(style)
+
+      map.current.on('style.load', () => {
+        map.current.setConfigProperty('basemap', 'lightPreset', 'dusk')
+        map.current.setConfigProperty('basemap', 'show3dObjects', true)
+      })
+    }
   }, [style])
 
   // 加载火点数据并处理交互事件
@@ -232,6 +244,11 @@ export default function MyMap() {
 
     updateData()
 
+    // 当底图样式重新加载时重新渲染数据
+    map.current.on('style.load', () => {
+      updateData()
+    })
+
     return () => {
       if (map.current) {
         map.current.off('mouseenter', 'firePointsLayer')
@@ -248,25 +265,26 @@ export default function MyMap() {
     const fetchDistrict = async () => {
       try {
         const geocodingClient = mbxGeocoding({
-          accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
+          accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
         })
-        const response = await geocodingClient.reverseGeocode({
-          query: currentLocation,
-          limit: 1,
-          language: ['zh']
-        }).send()
+        const response = await geocodingClient
+          .reverseGeocode({
+            query: currentLocation,
+            limit: 1,
+            language: ['zh'],
+          })
+          .send()
 
         const match = response.body.features[0]
         if (match) {
           const { context = [] } = match
-          const getText = (idPart: string) => context.find((c: { id: string | string[] }) => c.id.includes(idPart))?.text || '';
-          const country = getText('country');
-          const province = getText('region');
-          const city = getText('place');
-          const locality = getText('locality');
+          const getText = (idPart: string) =>
+            context.find((c: { id: string | string[] }) => c.id.includes(idPart))?.text || ''
+          const country = getText('country')
+          const province = getText('region')
+          const city = getText('place')
+          const locality = getText('locality')
           setCurrentDistrict(`${country} ${province} ${city}${locality}`)
-          console.log(`string: ${country} ${province} ${city}${locality} `)
-          console.log(currentDistrict)
         }
       } catch (error) {
         console.error('Reverse Geocoding Error: ', error)
@@ -274,10 +292,11 @@ export default function MyMap() {
     }
 
     fetchDistrict()
-  }, [currentLocation,currentDistrict])
+  }, [currentLocation, currentDistrict])
 
   return (
     <>
+      {/* 火点信息弹窗 */}
       <AnimatePresence>
         {currentId > 0 && (
           <motion.div
@@ -326,7 +345,19 @@ export default function MyMap() {
           </motion.div>
         )}
       </AnimatePresence>
-      <div ref={mapContainer} className='absolute left-0 h-full w-full' />
+      {/* 地图 */}
+      <div ref={mapContainer} className='absolute left-0 h-full w-full'>
+        <div
+          className='absolute left-0 top-0 z-10 h-24 w-24 cursor-pointer'
+          onClick={() =>
+            setStyle(prevStyle =>
+              prevStyle === 'mapbox://styles/mapbox/standard'
+                ? 'mapbox://styles/mapbox/standard-satellite'
+                : 'mapbox://styles/mapbox/standard',
+            )
+          }
+        />
+      </div>
     </>
   )
 }
