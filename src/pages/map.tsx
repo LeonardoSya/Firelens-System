@@ -2,12 +2,12 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import mapboxgl from 'mapbox-gl' // @ts-ignore
 import GlobeMinimap from 'mapbox-gl-globe-minimap' // @ts-ignore
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder' // @ts-ignore
+import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
 import { useAppSelector } from '@/app/redux-hooks'
 import { selectDayNight } from '@/features/filter-slice'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
-import { features } from 'process'
 
 interface FeatureProperties {
   Bright_ti5: number;
@@ -50,7 +50,8 @@ export default function MyMap() {
   const mapContainer = useRef(null)
   const map = useRef(null)
   const [isLoaded, setIsLoaded] = useState(false)
-  const [currentCoor, setCurrentCoor] = useState([])
+  const [currentLocation, setCurrentLocation] = useState([])
+  const [currentDistrict, setCurrentDistrict] = useState('')
   const [currentFrp, setCurrentFrp] = useState(0)
   const [currentIsDay, setCurrentIsDay] = useState(true)
   const [currentBright, setCurrentBright] = useState(0)
@@ -213,7 +214,7 @@ export default function MyMap() {
         // @ts-ignore
         map.current.on('click', 'firePointsLayer', e => {
           const coordinates = e.features[0].geometry.coordinates.slice()
-          setCurrentCoor(coordinates)
+          setCurrentLocation(coordinates)
           setCurrentFrp(e.features[0].properties.frp / 100)
           setCurrentIsDay(e.features[0].properties.DayNight > 0)
           setCurrentBright(e.features[0].properties.Bright_ti5 / 100)
@@ -239,6 +240,41 @@ export default function MyMap() {
       }
     }
   }, [date, isLoaded, dayNight])
+
+  // 火点逆向地理编码
+  useEffect(() => {
+    if (currentLocation.length === 0) return
+
+    const fetchDistrict = async () => {
+      try {
+        const geocodingClient = mbxGeocoding({
+          accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
+        })
+        const response = await geocodingClient.reverseGeocode({
+          query: currentLocation,
+          limit: 1,
+          language: ['zh']
+        }).send()
+
+        const match = response.body.features[0]
+        if (match) {
+          const { context = [] } = match
+          const getText = (idPart: string) => context.find((c: { id: string | string[] }) => c.id.includes(idPart))?.text || '';
+          const country = getText('country');
+          const province = getText('region');
+          const city = getText('place');
+          const locality = getText('locality');
+          setCurrentDistrict(`${country} ${province} ${city}${locality}`)
+          console.log(`string: ${country} ${province} ${city}${locality} `)
+          console.log(currentDistrict)
+        }
+      } catch (error) {
+        console.error('Reverse Geocoding Error: ', error)
+      }
+    }
+
+    fetchDistrict()
+  }, [currentLocation,currentDistrict])
 
   return (
     <>
@@ -275,8 +311,8 @@ export default function MyMap() {
             >
               {[
                 `火点编号：${currentId}`,
-                `受灾地区：{}`,
-                `火点地理坐标：${currentCoor.map(c => c.toFixed(2)).join(', ')}`,
+                `受灾地区：${currentDistrict}`,
+                `火点地理坐标：${currentLocation.map(c => c.toFixed(2)).join(', ')}`,
                 `火灾亮度值（单位：开尔文）：${currentBright}`,
                 `火灾辐射功率（单位：兆瓦）：${currentFrp}`,
                 `受灾时段：${currentIsDay ? '白天' : '夜晚'}`,

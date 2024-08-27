@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@mapbox/mapbox-gl-geocoder": "^5.0.2",
+    "@mapbox/mapbox-sdk": "^0.16.0",
     "@react-three/drei": "^9.43.3",
     "@react-three/fiber": "^8.9.1",
     "@reduxjs/toolkit": "^2.2.5",
