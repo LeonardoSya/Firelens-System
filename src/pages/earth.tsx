@@ -19,7 +19,7 @@ export function Earth(props: any) {
 
   const earthRef = useRef<THREE.Mesh>(null)
   const cloudsRef = useRef<THREE.Mesh>(null)
-  const [earthScale, setEarthScale] = useState([2, 2, 2])
+  const [earthScale, setEarthScale] = useState([2.2, 2.2, 2.2])
 
   useEffect(() => {
     // 设置初始缩放比例
@@ -46,8 +46,8 @@ export function Earth(props: any) {
     <>
       {/* <ambientLight intensity={1} /> */}
       {/* 点光源 */}
-      <pointLight color='#f6f3ea' position={[4, 0, 4]} intensity={1.4} />
-      <Stars radius={200} depth={90} count={10000} factor={8} saturation={0} fade={true} />
+      <pointLight color='#f6f3ea' position={[4, 0, 4]} intensity={0.6} />
+      <Stars radius={200} depth={90} count={10000} factor={6} saturation={0} fade={true} />
       <mesh ref={cloudsRef}>
         <sphereGeometry args={[1.005, 32, 32]} />
         <meshPhongMaterial
@@ -59,7 +59,7 @@ export function Earth(props: any) {
         />
       </mesh>
       {/* @ts-ignore */}
-      <mesh ref={earthRef} className='absolute flex h-80 w-80 shadow-inner'>
+      <mesh ref={earthRef} className='absolute -z-10 flex h-80 w-80 shadow-inner'>
         <sphereGeometry args={[1, 32, 32]} />
         {/* @ts-ignore */}
         <meshPhongMaterial specular specularMap={specularMap} />

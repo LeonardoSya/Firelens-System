@@ -133,7 +133,7 @@ export default function MyMap() {
 
     // 获取数据
     const fetchData = async (
-      date: String,
+      date: string,
       dayNight: { day: boolean, night: boolean },
     ): Promise<GeoData | null> => {
       try {

@@ -20,10 +20,19 @@ export default function Root() {
   const isOpen = useAppSelector(state => state.menu.isOpen)
   const [isHeaderCollapsed, setIsHeaderCollapsed] = useState(false)
   const [headerAnimation, setHeaderAnimation] = useState({ y: 0 })
+  const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
     isHeaderCollapsed ? setHeaderAnimation({ y: 570 }) : setHeaderAnimation({ y: 0 })
   }, [isHeaderCollapsed])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      window.scrollY > 0 ? setIsScrolled(true) : setIsScrolled(false)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <div className='bg-neutral-950 pt-6 dark:bg-gray-900'>
@@ -209,7 +218,7 @@ export default function Root() {
         </motion.div>
 
         {/* front-header */}
-        <header className='pb-4 pt-10'>
+        <header className={`pb-4 pt-10 ${isScrolled ? 'sticky top-0 z-50' : ''}`}>
           <div className='mx-auto max-w-7xl rounded-t-xl bg-white px-4 sm:px-6 lg:px-8 dark:bg-gray-950'>
             <motion.nav
               variants={headerContainerVariants}
@@ -262,7 +271,7 @@ export default function Root() {
                       variants={itemVariants}
                       className='inline-block transform cursor-pointer rounded-lg px-2 py-1 tracking-widest text-slate-700 duration-75 hover:bg-slate-100 focus-visible:outline-none focus-visible:outline-1 focus-visible:outline-slate-400 dark:font-semibold dark:text-slate-300 dark:hover:bg-gray-950 dark:hover:text-white'
                     >
-                      社区视野
+                      开发文档
                     </motion.div>
                   </Link>
                 </motion.div>
@@ -386,7 +395,7 @@ export default function Root() {
           />
         )}
 
-        <div className='h-full from-gray-950 to-gray-900 dark:bg-gradient-to-b'>
+        <div className='h-full dark:bg-gradient-to-b dark:from-gray-950 dark:to-slate-900'>
           <Outlet />
         </div>
       </motion.div>
