@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Outlet, Link } from 'react-router-dom'
+import { useIntl } from 'react-intl'
 import { motion } from 'framer-motion'
 import Navigation from '@/components/navigation'
 import { useAppDispatch, useAppSelector } from '@/app/redux-hooks'
 import { toggle } from '@/features/menu-slice'
+import { useI18n } from '@/locales/i18n'
 
 const headerContainerVariants = {
   hidden: { opacity: 0 },
@@ -21,6 +23,13 @@ export default function Root() {
   const [isHeaderCollapsed, setIsHeaderCollapsed] = useState(false)
   const [headerAnimation, setHeaderAnimation] = useState({ y: 0 })
   const [isScrolled, setIsScrolled] = useState(false)
+  const { locale, switchLocale } = useI18n()
+  const intl = useIntl()
+
+  const toggleLocale = () => {
+    const newLocale = locale === 'zh' ? 'en' : 'zh'
+    switchLocale(newLocale)
+  }
 
   useEffect(() => {
     isHeaderCollapsed ? setHeaderAnimation({ y: 570 }) : setHeaderAnimation({ y: 0 })
@@ -255,7 +264,7 @@ export default function Root() {
                       variants={itemVariants}
                       className='inline-block transform cursor-pointer rounded-lg px-2 py-1 tracking-widest text-slate-700 duration-75 hover:bg-slate-100 focus-visible:outline-none focus-visible:outline-1 focus-visible:outline-slate-400 dark:font-semibold dark:text-slate-300 dark:hover:bg-gray-950 dark:hover:text-white'
                     >
-                      产品介绍
+                      {intl.formatMessage({ id: 'root.tab1' })}
                     </motion.div>
                   </Link>
                   <Link to='/map'>
@@ -263,7 +272,7 @@ export default function Root() {
                       variants={itemVariants}
                       className='inline-block transform cursor-pointer rounded-lg px-2 py-1 tracking-widest text-slate-700 duration-75 hover:bg-slate-100 focus-visible:outline-none focus-visible:outline-1 focus-visible:outline-slate-400 dark:font-semibold dark:text-slate-300 dark:hover:bg-gray-950 dark:hover:text-white'
                     >
-                      地图中台
+                      {intl.formatMessage({ id: 'root.tab2' })}
                     </motion.div>
                   </Link>
                   <Link to='/'>
@@ -271,7 +280,7 @@ export default function Root() {
                       variants={itemVariants}
                       className='inline-block transform cursor-pointer rounded-lg px-2 py-1 tracking-widest text-slate-700 duration-75 hover:bg-slate-100 focus-visible:outline-none focus-visible:outline-1 focus-visible:outline-slate-400 dark:font-semibold dark:text-slate-300 dark:hover:bg-gray-950 dark:hover:text-white'
                     >
-                      开发文档
+                      {intl.formatMessage({ id: 'root.tab3' })}
                     </motion.div>
                   </Link>
                 </motion.div>
@@ -282,72 +291,51 @@ export default function Root() {
                     to='/'
                     className='inline-block transform cursor-pointer rounded-lg px-2 py-1 tracking-widest text-slate-700 duration-75 hover:bg-slate-100 focus-visible:outline-none focus-visible:outline-1 focus-visible:outline-slate-400 dark:font-semibold dark:text-slate-300 dark:hover:bg-neutral-950 dark:hover:text-white'
                   >
-                    Sign in
+                    {intl.formatMessage({ id: 'root.signIn' })}
                   </Link>
                 </motion.div>
                 <Link to='/map'>
                   <motion.div
                     variants={itemVariants}
                     whileTap={{ scale: 0.95, transition: { duration: 0.05 } }}
-                    className='inline-flex transform cursor-pointer items-center justify-center rounded-full bg-orange-700 px-4 py-1.5 text-sm font-semibold text-white duration-75 hover:bg-orange-700 focus:outline-none focus-visible:outline-2 focus-visible:outline-orange-600 active:bg-orange-800 md:py-2'
+                    className='inline-flex transform cursor-pointer items-center justify-center rounded-full bg-orange-700 px-4 py-1.5 text-sm font-extrabold text-white duration-75 hover:bg-orange-700 focus:outline-none focus-visible:outline-2 focus-visible:outline-orange-600 active:bg-orange-800 md:py-2'
                   >
-                    <span>
-                      Get started <span className='hidden lg:inline'>today</span>
+                    <span className='hidden lg:inline'>
+                      {intl.formatMessage({ id: 'root.getStart.long' })}
                     </span>
+                    {intl.formatMessage({ id: 'root.getStart.short' })}
                   </motion.div>
                 </Link>
-                {/* <motion.div
-                  className='hidden lg:block'
+                <motion.div
+                  className='hidden md:block'
                   variants={itemVariants}
-                  onClick={() => {
-                    const newTheme = theme === 'light' ? 'dark' : 'light'
-                    setTheme(newTheme)
-                    localStorage.theme = newTheme
-                    document.documentElement.classList.toggle('dark', newTheme === 'dark')
-                  }}
+                  onClick={toggleLocale}
                 >
-                  {theme === 'light' ? (
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      className='h-7 w-auto cursor-pointer'
-                      viewBox='0 0 512 512'
-                    >
-                      <path
-                        fill='none'
-                        strokeLinecap='round'
-                        strokeMiterlimit='10'
-                        strokeWidth='32'
-                        className='stroke-orange-700 dark:stroke-slate-200'
-                        d='M256 48v48M256 416v48M403.08 108.92l-33.94 33.94M142.86 369.14l-33.94 33.94M464 256h-48M96 256H48M403.08 403.08l-33.94-33.94M142.86 142.86l-33.94-33.94'
-                      />
-                      <circle
-                        cx='256'
-                        cy='256'
-                        r='80'
-                        fill='none'
-                        className='stroke-orange-700 dark:stroke-slate-200'
-                        strokeLinecap='round'
-                        strokeMiterlimit='10'
-                        strokeWidth='32'
-                      />
-                    </svg>
-                  ) : (
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      className='h-7 w-auto cursor-pointer'
-                      viewBox='0 0 512 512'
-                    >
-                      <path
-                        className='stroke-orange-700 dark:stroke-slate-200'
-                        d='M160 136c0-30.62 4.51-61.61 16-88C99.57 81.27 48 159.32 48 248c0 119.29 96.71 216 216 216 88.68 0 166.73-51.57 200-128-26.39 11.49-57.38 16-88 16-119.29 0-216-96.71-216-216z'
-                        fill='none'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth='32'
-                      />
-                    </svg>
-                  )}
-                </motion.div> */}
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='h-6 w-auto cursor-pointer'
+                    viewBox='0 0 512 512'
+                  >
+                    <path
+                      fill='none'
+                      stroke='currentColor'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='32'
+                      className='stroke-orange-700 dark:stroke-slate-200'
+                      d='M48 112h288M192 64v48M272 448l96-224 96 224M301.5 384h133M281.3 112S257 206 199 277 80 384 80 384'
+                    />
+                    <path
+                      d='M256 336s-35-27-72-75-56-85-56-85'
+                      fill='none'
+                      stroke='currentColor'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='32'
+                      className='stroke-orange-700 dark:stroke-slate-200'
+                    />
+                  </svg>
+                </motion.div>
                 <div className='z-10 flex md:hidden'>
                   <motion.button variants={itemVariants} onClick={() => dispatch(toggle())}>
                     {isOpen ? (

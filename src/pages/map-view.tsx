@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useIntl } from 'react-intl'
 import { useAppDispatch, useAppSelector } from '@/app/redux-hooks'
 import { RootState } from '@/app/store'
 import { setDate, setDay, setNight, selectDayNight } from '@/features/filter-slice'
@@ -20,6 +21,7 @@ const SideMenu = () => {
   const dispatch = useAppDispatch()
   const dayNight = useAppSelector(selectDayNight)
   const selectDate = useAppSelector((state: RootState) => state.filter.date)
+  const intl = useIntl()
 
   const dates = [
     { label: '2024-08', value: '20240714-20240814' },
@@ -31,7 +33,10 @@ const SideMenu = () => {
     { label: '2024-01', value: '20231214-20240114' },
   ]
 
-  const dayNightLabels = ['白天', '夜晚']
+  const dayNightLabels = [
+    intl.formatMessage({ id: 'map.menu.day' }),
+    intl.formatMessage({ id: 'map.menu.night' }),
+  ]
 
   const handleDateClick = (value: any) => {
     dispatch(setDate(value))
@@ -76,7 +81,9 @@ const SideMenu = () => {
         >
           <path d='M416 64h-16V48.45c0-8.61-6.62-16-15.23-16.43A16 16 0 00368 48v16H144V48.45c0-8.61-6.62-16-15.23-16.43A16 16 0 00112 48v16H96a64 64 0 00-64 64v12a4 4 0 004 4h440a4 4 0 004-4v-12a64 64 0 00-64-64zM476 176H36a4 4 0 00-4 4v236a64 64 0 0064 64h320a64 64 0 0064-64V180a4 4 0 00-4-4zM239.58 401.1c-12.17 9.61-28.75 14.9-46.7 14.9-27.87 0-48.48-18.16-57.66-33.7a16 16 0 0127.56-16.3c1.08 1.84 11.15 18 30.1 18 16.66 0 36.12-7.29 36.12-27.82 0-6.25-1.22-14.95-7-20.88-8.54-8.74-22.75-12.67-30.11-12.67a16 16 0 010-32c4.85 0 17.41-2.6 25.28-10.65a22 22 0 006.57-16.08c0-23.23-28.63-23.9-31.89-23.9-17.34 0-23.8 10.61-24.07 11.06a16 16 0 11-27.55-16.26c7.64-13 25.22-26.8 51.62-26.8 16.44 0 31.76 4.77 43.13 13.42 13.39 10.2 20.76 25.28 20.76 42.48A54 54 0 01240 302.35c-1.15 1.18-2.36 2.28-3.59 3.35a66.18 66.18 0 018.42 7.23c10.56 10.8 16.14 25.75 16.14 43.25.03 18.06-7.58 34.01-21.39 44.92zM368 396a16 16 0 01-32 0V256.29l-22.51 16.59a16 16 0 11-19-25.76l43.42-32a16 16 0 019.49-3.12h4.6a16 16 0 0116 16z' />
         </svg>
-        <span className='font-semibold text-neutral-700 dark:text-neutral-200'>筛选监测时段</span>
+        <span className='font-semibold text-neutral-700 dark:text-neutral-200'>
+          {intl.formatMessage({ id: 'map.menu.filterDate' })}
+        </span>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           className={`absolute right-3 h-auto w-5 stroke-neutral-700 dark:stroke-neutral-200 ${itemOpen === 1 ? 'rotate-180' : ''} transform duration-150`}
@@ -148,7 +155,9 @@ const SideMenu = () => {
         >
           <path d='M394.23 197.56a300.43 300.43 0 00-53.37-90C301.2 61.65 249.05 32 208 32a16 16 0 00-15.48 20c13.87 53-14.88 97.07-45.31 143.72C122 234.36 96 274.27 96 320c0 88.22 71.78 160 160 160s160-71.78 160-160c0-43.3-7.32-84.49-21.77-122.44zm-105.9 221.13C278 429.69 265.05 432 256 432s-22-2.31-32.33-13.31S208 390.24 208 368c0-25.14 8.82-44.28 17.34-62.78 4.95-10.74 10-21.67 13-33.37a8 8 0 0112.49-4.51A126.48 126.48 0 01275 292c18.17 24 29 52.42 29 76 0 22.24-5.42 39.77-15.67 50.69z' />
         </svg>
-        <span className='font-semibold text-neutral-700 dark:text-neutral-200'>受灾严重度</span>
+        <span className='font-semibold text-neutral-700 dark:text-neutral-200'>
+          {intl.formatMessage({ id: 'map.menu.filterFrp' })}
+        </span>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           className={`absolute right-3 h-auto w-5 fill-neutral-700 stroke-neutral-700 dark:fill-neutral-200 dark:stroke-neutral-200 ${itemOpen === 2 ? 'rotate-180' : ''} transform duration-150`}
@@ -226,7 +235,9 @@ const SideMenu = () => {
             strokeWidth='32'
           />
         </svg>
-        <span className='font-semibold text-neutral-700 dark:text-neutral-200'>受灾时间</span>
+        <span className='font-semibold text-neutral-700 dark:text-neutral-200'>
+          {intl.formatMessage({ id: 'map.menu.filterDayNight' })}
+        </span>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           className={`absolute right-3 h-auto w-5 fill-neutral-700 stroke-neutral-700 dark:fill-neutral-200 dark:stroke-neutral-200 ${itemOpen === 3 ? 'rotate-180' : ''} transform duration-150`}
