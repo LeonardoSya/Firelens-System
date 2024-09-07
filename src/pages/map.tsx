@@ -1,39 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { throttle } from 'lodash'
+import { format } from 'date-fns'
 import mapboxgl from 'mapbox-gl' // @ts-ignore
 import GlobeMinimap from 'mapbox-gl-globe-minimap' // @ts-ignore
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder' // @ts-ignore
 import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding'
-import { useAppSelector } from '@/app/redux-hooks'
-import { selectDayNight } from '@/features/filter-slice'
+import type { FirePoint, MapboxEvent } from '@/types/map.types'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
-
-interface FeatureProperties {
-  Bright_ti5: number;
-  DayNight: number;
-  confidence: number;
-  fire_point: number;
-  frp: number;
-}
-
-interface Feature {
-  type: 'Feature';
-  geometry: {
-    geodesic: boolean,
-    type: 'Point' | 'LineString' | 'Polygon',
-    coordinates: [number, number],
-  };
-  id: string;
-  properties: FeatureProperties;
-}
-
-interface GeoData {
-  type: 'FeatureCollection';
-  features: Feature[];
-  date: string;
-  _id: string;
-}
 
 const listItemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -46,19 +21,15 @@ const containerVariants = {
   visible: { transition: { staggerChildren: 0.1 } },
 }
 
-export default function MyMap() {
+const MyMap: React.FC = () => {
   const mapContainer = useRef(null)
   const map = useRef(null)
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [currentLocation, setCurrentLocation] = useState([])
-  const [currentDistrict, setCurrentDistrict] = useState('')
-  const [currentFrp, setCurrentFrp] = useState(0)
-  const [currentIsDay, setCurrentIsDay] = useState(true)
-  const [currentBright, setCurrentBright] = useState(0)
-  const [currentId, setCurrentId] = useState(0)
-  const [style, setStyle] = useState('mapbox://styles/mapbox/standard')
-  const date = useAppSelector(state => state.filter.date)
-  const dayNight = useAppSelector(selectDayNight)
+  const abortControllerRef = useRef<AbortController | null>(null)
+  const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false)
+  const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false)
+  const [firePoint, setFirePoint] = useState<FirePoint | null>(null)
+  const [firePointId, setFirePointId] = useState<number>(0)
+  const [style, setStyle] = useState<string>('mapbox://styles/mapbox/standard')
 
   // 初始化地图
   useEffect(() => {
@@ -68,13 +39,12 @@ export default function MyMap() {
       alert('您的浏览器不支持Mapbox')
       return
     }
-
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: style,
       center: [116.27, 40],
-      zoom: 13,
-      pitch: 45,
+      zoom: 5,
+      // pitch: 45,
       attributionControl: false,
     })
     map.current.on('style.load', () => {
@@ -84,7 +54,7 @@ export default function MyMap() {
 
     // 地图加载时 添加地图控件
     map.current.on('load', () => {
-      setIsLoaded(true)
+      setIsMapLoaded(true)
       map.current.addControl(
         new MapboxGeocoder({
           accessToken: mapboxgl.accessToken,
@@ -112,14 +82,17 @@ export default function MyMap() {
       )
     })
 
-    return () => map.current.remove()
+    return () => {
+      if (map.current) {
+        map.current.remove()
+      }
+    }
   }, [])
 
   // 监听style更新底图样式
   useEffect(() => {
-    if (map.current && isLoaded) {
+    if (map.current && isMapLoaded) {
       map.current.setStyle(style)
-
       map.current.on('style.load', () => {
         map.current.setConfigProperty('basemap', 'lightPreset', 'dusk')
         map.current.setConfigProperty('basemap', 'show3dObjects', true)
@@ -128,139 +101,144 @@ export default function MyMap() {
   }, [style])
 
   // 加载火点数据并处理交互事件
-  useEffect(() => {
-    if (!map.current || !isLoaded) return
+  const fetchData = useCallback(async () => {
+    try {
+      setIsDataLoaded(true)
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort() // 拦截上一次请求
+      }
+      abortControllerRef.current = new AbortController() // 被中断的请求会抛出AbortError
 
-    // 获取数据
-    const fetchData = async (
-      date: string,
-      dayNight: { day: boolean, night: boolean },
-    ): Promise<GeoData | null> => {
-      try {
-        const response = await fetch(`http://localhost:3001/api/mapdata?&date=${date}`)
-        let data = await response.json()
-        let dataBefore = data[0]
-
-        data = {
-          ...dataBefore,
-          features: dataBefore.features.filter((feature: { properties: { DayNight: number } }) => {
-            const { DayNight } = feature.properties
-            const { day, night } = dayNight
-            if (day && night) {
-              return true
-            } else if (day) {
-              return DayNight === 100
-            } else if (night) {
-              return DayNight === 0
-            } else {
-              return false
-            }
-          }),
-        }
-
-        if (!data.features || !Array.isArray(data.features)) {
-          console.error('Invalid data structure:', data)
-          return null
-        }
-
-        return data
-      } catch (error) {
-        console.error('Error fetching data:', error)
+      const bounds = map.current.getBounds()
+      const zoom = map.current.getZoom()
+      const url = `http://localhost:3001/api/global-48h-data?minLat=${bounds.getSouth()}&maxLat=${bounds.getNorth()}&minLon=${bounds.getWest()}&maxLon=${bounds.getEast()}&zoomLevel=${zoom}`
+      const response = await fetch(url, { signal: abortControllerRef.current.signal })
+      const data = await response.json()
+      if (!data.features || !Array.isArray(data.features)) {
+        console.error('Invalid data structure:', data)
         return null
       }
-    }
-
-    // 渲染数据
-    const updateData = async () => {
-      const data = await fetchData(date, dayNight)
-
-      if (!data) return
-
-      if (map.current.getSource('firePoints')) {
-        // 若数据源已存在，使用setData更新数据
-        map.current.getSource('firePoints').setData(data)
+      return data
+    } catch (error: any) {
+      if (error.name === 'AbortError') {
+        console.log('Request aborted')
       } else {
-        // 若不存在，创建新的数据源和图层
-        const frpValues = data.features.map(
-          (feature: { properties: { frp: number } }) => feature.properties.frp,
-        )
-        const maxFrp = Math.max(...frpValues)
-        const minFrp = Math.min(...frpValues)
+        console.error('Error fetching data:', error)
+      }
+      return null
+    } finally {
+      setIsDataLoaded(false)
+    }
+  }, [])
 
-        map.current.addSource('firePoints', {
-          type: 'geojson',
-          data,
-        })
+  // 渲染火点数据
+  const updateData = useCallback(async () => {
+    console.log('Updating data...')
+    const data = await fetchData()
+    if (!data) {
+      console.log('No data received')
+      return
+    }
+    console.log('Data received, updating map')
+    if (map.current.getSource('firePoints')) {
+      // 若数据源已存在，使用setData更新数据
+      ;(map.current.getSource('firePoints') as mapboxgl.GeoJSONSource).setData(data)
+    } else {
+      map.current.addSource('firePoints', {
+        type: 'geojson',
+        data,
+      })
+      map.current.addLayer({
+        id: 'firePointsLayer',
+        type: 'circle',
+        source: 'firePoints',
+        paint: {
+          'circle-radius': 6,
+          'circle-color': '#e20303',
+          'circle-blur': 0.4,
+          'circle-stroke-color': '#333333',
+          'circle-stroke-width': 1,
+          'circle-stroke-opacity': 0.7,
+          'circle-emissive-strength': 1,
+        },
+      })
+      map.current.on('mouseenter', 'firePointsLayer', () => {
+        map.current.getCanvas().style.cursor = 'pointer'
+      })
+      map.current.on('mouseleave', 'firePointsLayer', () => {
+        map.current.getCanvas().style.cursor = ''
+      })
+      map.current.on('click', 'firePointsLayer', (e: MapboxEvent) => {
+        const feature = e.features[0]
+        const properties = feature.properties
+        const coordinates = feature.geometry.coordinates.slice()
 
-        map.current.addLayer({
-          id: 'firePointsLayer',
-          type: 'circle',
-          source: 'firePoints',
-          paint: {
-            'circle-radius': [
-              'interpolate',
-              ['linear'],
-              ['zoom'],
-              6,
-              ['interpolate', ['linear'], ['get', 'frp'], minFrp, 6, maxFrp, 6 * 2],
-              12,
-              ['interpolate', ['linear'], ['get', 'frp'], minFrp, 20, maxFrp, 20 * 2],
-              17,
-              ['interpolate', ['linear'], ['get', 'frp'], minFrp, 150, maxFrp, 150 * 2],
-            ],
-            'circle-color': '#e20303',
-            'circle-blur': 0.4,
-            'circle-stroke-color': '#333333',
-            'circle-stroke-width': 1,
-            'circle-stroke-opacity': 0.7,
-            'circle-emissive-strength': 1,
-          },
-        })
+        const acqDate = new Date(properties.acq_date)
+        const hours = Math.floor(properties.acq_time / 100)
+        const minutes = properties.acq_time % 100
+        acqDate.setUTCHours(hours, minutes)
+        const dateTime = format(acqDate, 'yyyy-MM-dd HH:mm:ss')
 
-        map.current.on('mouseenter', 'firePointsLayer', () => {
-          map.current.getCanvas().style.cursor = 'pointer'
+        setFirePoint({
+          loc: coordinates,
+          district: '',
+          frp: properties.frp,
+          bright_ti4: properties.bright_ti4,
+          bright_ti5: properties.bright_ti5,
+          daynight: properties.daynight === 'D',
+          dateTime: dateTime,
+          satellite: properties.satellite,
         })
-        map.current.on('mouseleave', 'firePointsLayer', () => {
-          map.current.getCanvas().style.cursor = ''
+        setFirePointId(properties.bright_ti4)
+        map.current.flyTo({
+          center: coordinates,
+          zoom: 9,
+          duration: 2000,
+          pitch: 30,
         })
-        // @ts-ignore
-        map.current.on('click', 'firePointsLayer', e => {
-          const coordinates = e.features[0].geometry.coordinates.slice()
-          setCurrentLocation(coordinates)
-          setCurrentFrp(e.features[0].properties.frp / 100)
-          setCurrentIsDay(e.features[0].properties.DayNight > 0)
-          setCurrentBright(e.features[0].properties.Bright_ti5 / 100)
-          setCurrentId(e.features[0].properties.fire_point)
+      })
+    }
+  }, [fetchData])
 
-          map.current.flyTo({
-            center: coordinates,
-            zoom: 9,
-            duration: 2000,
-            pitch: 30,
-          })
-        })
+  const updateOnMove = useCallback(
+    throttle(() => {
+      updateData()
+    }, 500),
+    [updateData],
+  )
+
+  useEffect(() => {
+    if (!map.current || !isMapLoaded) return
+    updateData()
+    map.current.on('moveend', updateOnMove)
+    map.current.on('zoomend', updateOnMove)
+
+    return () => {
+      if (map.current) {
+        map.current.off('moveend', updateOnMove)
+        map.current.off('zoomend', updateOnMove)
+      }
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
       }
     }
+  }, [isMapLoaded, updateData, updateOnMove])
 
-    updateData()
+  useEffect(() => {
+    if (map.current && isMapLoaded) {
+      updateData()
+    }
+    if (!map.current || !isMapLoaded) return
 
     // 当底图样式重新加载时重新渲染数据
     map.current.on('style.load', () => {
       updateData()
     })
-
-    return () => {
-      if (map.current) {
-        map.current.off('mouseenter', 'firePointsLayer')
-        map.current.off('mouseleave', 'firePointsLayer')
-        map.current.off('click', 'firePointsLayer')
-      }
-    }
-  }, [date, isLoaded, dayNight])
+  }, [isMapLoaded])
 
   // 火点逆向地理编码
   useEffect(() => {
-    if (currentLocation.length === 0) return
+    if (!firePoint) return
 
     const fetchDistrict = async () => {
       try {
@@ -269,7 +247,7 @@ export default function MyMap() {
         })
         const response = await geocodingClient
           .reverseGeocode({
-            query: currentLocation,
+            query: firePoint.loc,
             limit: 1,
             language: ['zh'],
           })
@@ -284,7 +262,10 @@ export default function MyMap() {
           const province = getText('region')
           const city = getText('place')
           const locality = getText('locality')
-          setCurrentDistrict(`${country} ${province} ${city}${locality}`)
+          setFirePoint(prev => ({
+            ...prev,
+            district: `${country} ${province} ${city}${locality}`,
+          }))
         }
       } catch (error) {
         console.error('Reverse Geocoding Error: ', error)
@@ -292,22 +273,21 @@ export default function MyMap() {
     }
 
     fetchDistrict()
-  }, [currentLocation, currentDistrict])
+  }, [firePoint])
 
   return (
     <>
       {/* 火点信息弹窗 */}
       <AnimatePresence>
-        {currentId > 0 && (
+        {firePointId !== 0 && (
           <motion.div
-            key={currentId}
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 0 }}
             className='absolute right-32 top-1/2 z-10 max-w-96 transform rounded-xl bg-white bg-opacity-85 p-6 duration-100 dark:bg-gray-950 dark:bg-opacity-80'
           >
             <div
-              onClick={() => setCurrentId(0)}
+              onClick={() => setFirePointId(0)}
               className='absolute right-3 top-2 transform cursor-pointer text-gray-900 duration-150 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
             >
               <svg xmlns='http://www.w3.org/2000/svg' className='h-7 w-auto' viewBox='0 0 512 512'>
@@ -329,13 +309,15 @@ export default function MyMap() {
               className='space-y-1 font-semibold text-gray-950 dark:text-gray-400'
             >
               {[
-                `火点编号：${currentId}`,
-                `受灾地区：${currentDistrict}`,
-                `火点地理坐标：${currentLocation.map(c => c.toFixed(2)).join(', ')}`,
-                `火灾亮度值（单位：开尔文）：${currentBright}`,
-                `火灾辐射功率（单位：兆瓦）：${currentFrp}`,
-                `受灾时段：${currentIsDay ? '白天' : '夜晚'}`,
-                `数据来源：VNP14IMGTDL_NRT Daily Raster: VIIRS (S-NPP) Band 375m Active Fire`,
+                `受灾地区：${firePoint.district}`,
+                `火点地理坐标：${firePoint.loc.map(c => c.toFixed(2)).join(', ')}`,
+                `火灾ti4通道亮度值（单位：开尔文）：${firePoint.bright_ti4}`,
+                `火灾ti5通道亮度值（单位：开尔文）：${firePoint.bright_ti5}`,
+                `火灾辐射功率（单位：兆瓦）：${firePoint.frp}`,
+                `受灾时间：${firePoint.dateTime}`,
+                `受灾时段：${firePoint.daynight ? '白天' : '夜晚'}`,
+                `监测卫星：${firePoint.satellite}`,
+                `数据来源：VIIRS 375m / S-NPP`,
               ].map((item, index) => (
                 <motion.li key={index} variants={listItemVariants} transition={{ duration: 0.3 }}>
                   {item}
@@ -350,14 +332,28 @@ export default function MyMap() {
         <div
           className='absolute left-0 top-0 z-10 h-24 w-24 cursor-pointer'
           onClick={() =>
-            setStyle(prevStyle =>
-              prevStyle === 'mapbox://styles/mapbox/standard'
+            setStyle(prev =>
+              prev === 'mapbox://styles/mapbox/standard'
                 ? 'mapbox://styles/mapbox/standard-satellite'
                 : 'mapbox://styles/mapbox/standard',
             )
           }
         />
       </div>
+      {/* 加载指示器 */}
+      {isDataLoaded && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center bg-opacity-50'>
+          <div
+            style={{
+              borderTopColor: 'transparent',
+              transform: `rotate(${Math.random() * 360}deg)`,
+            }}
+            className='h-12 w-12 animate-spin rounded-full border-4 border-orange-700/80'
+          />
+        </div>
+      )}
     </>
   )
 }
+
+export default MyMap

@@ -9,7 +9,7 @@ import EarthNormalMap from '@/assets/textures/8k_earth_normal_map.jpg'
 import EarthSpecularMap from '@/assets/textures/8k_earth_specular_map.jpg'
 import EarthCloudsMap from '@/assets/textures/8k_earth_clouds.jpg'
 
-export default function Earth(props: any) {
+export default function Earth() {
   const [colorMap, normalMap, specularMap, cloudsMap] = useLoader(TextureLoader, [
     EarthDayMap, // 日地图
     EarthNormalMap, // 法线贴图
