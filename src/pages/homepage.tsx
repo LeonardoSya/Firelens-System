@@ -1,8 +1,8 @@
 import { Canvas } from '@react-three/fiber'
-import { Earth } from '@/pages/earth'
 import { useIntl } from 'react-intl'
 import { motion } from 'framer-motion' // @ts-ignore
 import Slider from 'react-slick'
+import Earth from '@/pages/components/earth'
 import mapStudioImg from '@/assets/img/map-studio-img.png'
 import mapSatellite from '@/assets/img/map-satellite.png'
 import mapCity from '@/assets/img/map-city.png'
