@@ -6,6 +6,8 @@ import mapboxgl from 'mapbox-gl' // @ts-ignore
 import GlobeMinimap from 'mapbox-gl-globe-minimap' // @ts-ignore
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder' // @ts-ignore
 import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding'
+import { useAppSelector } from '@/app/redux-hooks'
+import { RootState } from '@/app/store'
 import type { FirePoint, MapboxEvent } from '@/types/map.types'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
@@ -30,6 +32,7 @@ const MyMap: React.FC = () => {
   const [firePoint, setFirePoint] = useState<FirePoint | null>(null)
   const [firePointId, setFirePointId] = useState<number>(0)
   const [style, setStyle] = useState<string>('mapbox://styles/mapbox/standard')
+  const filterParams = useAppSelector((state: RootState) => state.filter)
 
   // 初始化地图
   useEffect(() => {
@@ -110,8 +113,19 @@ const MyMap: React.FC = () => {
       abortControllerRef.current = new AbortController() // 被中断的请求会抛出AbortError
 
       const bounds = map.current.getBounds()
-      const zoom = map.current.getZoom()
-      const url = `http://localhost:3001/api/global-48h-data?minLat=${bounds.getSouth()}&maxLat=${bounds.getNorth()}&minLon=${bounds.getWest()}&maxLon=${bounds.getEast()}&zoomLevel=${zoom}`
+      const baseParams = {
+        minLat: bounds.getSouth(),
+        maxLat: bounds.getNorth(),
+        minLon: bounds.getWest(),
+        maxLon: bounds.getEast(),
+        ...filterParams,
+      }
+
+      const queryParams = new URLSearchParams(
+        Object.entries(baseParams).filter(([_, value]) => value != null) as [string, string][],
+      ).toString()
+      const url = `http://localhost:3001/api/global-48h-data?${queryParams}`
+
       const response = await fetch(url, { signal: abortControllerRef.current.signal })
       const data = await response.json()
       if (!data.features || !Array.isArray(data.features)) {
@@ -129,17 +143,15 @@ const MyMap: React.FC = () => {
     } finally {
       setIsDataLoaded(false)
     }
-  }, [])
+  }, [filterParams])
 
   // 渲染火点数据
   const updateData = useCallback(async () => {
-    console.log('Updating data...')
     const data = await fetchData()
     if (!data) {
       console.log('No data received')
       return
     }
-    console.log('Data received, updating map')
     if (map.current.getSource('firePoints')) {
       // 若数据源已存在，使用setData更新数据
       ;(map.current.getSource('firePoints') as mapboxgl.GeoJSONSource).setData(data)
@@ -182,6 +194,7 @@ const MyMap: React.FC = () => {
         setFirePoint({
           loc: coordinates,
           district: '',
+          confidence: properties.confidence,
           frp: properties.frp,
           bright_ti4: properties.bright_ti4,
           bright_ti5: properties.bright_ti5,
@@ -288,7 +301,7 @@ const MyMap: React.FC = () => {
           >
             <div
               onClick={() => setFirePointId(0)}
-              className='absolute right-3 top-2 transform cursor-pointer text-gray-900 duration-150 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+              className='absolute right-2 top-2 transform cursor-pointer text-gray-900 duration-150 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
             >
               <svg xmlns='http://www.w3.org/2000/svg' className='h-7 w-auto' viewBox='0 0 512 512'>
                 <path
@@ -311,13 +324,14 @@ const MyMap: React.FC = () => {
               {[
                 `受灾地区：${firePoint.district}`,
                 `火点地理坐标：${firePoint.loc.map(c => c.toFixed(2)).join(', ')}`,
-                `火灾ti4通道亮度值（单位：开尔文）：${firePoint.bright_ti4}`,
-                `火灾ti5通道亮度值（单位：开尔文）：${firePoint.bright_ti5}`,
-                `火灾辐射功率（单位：兆瓦）：${firePoint.frp}`,
+                `火点置信度：${firePoint.confidence}`,
+                `Ti4通道亮度值 (开尔文)：${firePoint.bright_ti4}`,
+                `Ti5通道亮度值 (开尔文)：${firePoint.bright_ti5}`,
+                `火灾辐射功率 (兆瓦)：${firePoint.frp}`,
                 `受灾时间：${firePoint.dateTime}`,
                 `受灾时段：${firePoint.daynight ? '白天' : '夜晚'}`,
                 `监测卫星：${firePoint.satellite}`,
-                `数据来源：VIIRS 375m / S-NPP`,
+                `数据来源：VIIRS 375m / NOAA-21`,
               ].map((item, index) => (
                 <motion.li key={index} variants={listItemVariants} transition={{ duration: 0.3 }}>
                   {item}

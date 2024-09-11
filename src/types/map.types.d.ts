@@ -32,6 +32,7 @@ export interface FeatureCollection {
 export interface FirePoint {
   loc: number[]
   district: string
+  confidence: string
   frp: number
   bright_ti4: number
   bright_ti5: number
