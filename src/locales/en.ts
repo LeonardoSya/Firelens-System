@@ -4,12 +4,12 @@ export const enMsg = {
   'root.tab3': 'Docs',
   'root.signIn': 'Sign In',
   'root.getStart.short': 'Get Started',
-  'root.getStart.long': "Let's",
+  'root.getStart.long': "Let's\u00A0",
 
-  'home.title1': 'China Fire Dynamic Monitoring Platform',
+  'home.title1': 'Global Fire Dynamic Monitoring Platform',
   'home.title2': 'A One-Stop Solution for Multi-dimensional Hotspot Data',
   'home.introduction':
-    'The platform aims to provide a responsive, highly accurate, and high-performance cross-platform visualization solution for monitoring fire hotspots and multi-dimensional ecological data across China and the East Asia region.',
+    '—— The platform aims to provide a responsive, highly accurate, and high-performance cross-platform visualization solution for monitoring fire hotspots and multi-dimensional ecological data globally.',
   'home.team': 'Beijing Forestry University · Firelens Team',
 
   'map.menu.filterDate': 'Filter Period',

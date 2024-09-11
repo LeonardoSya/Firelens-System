@@ -61,7 +61,6 @@ export default function Homepage() {
               style={{ userSelect: 'none' }}
               className='my-6 text-lg leading-tight tracking-wide text-neutral-600 sm:text-2xl sm:leading-normal dark:text-slate-400'
             >
-              Firelens
               {intl.formatMessage({ id: 'home.introduction' })}
             </p>
             <p
