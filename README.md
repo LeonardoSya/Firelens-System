@@ -1,6 +1,6 @@
 <p align="center">
-  <strong>🔥 Firelens, a WebGIS-based global dynamic fire monitoring system designed for real-time detection, visualization, and analysis of wildfire activities worldwide.</strong><br/>
-  <strong>🌏 火灾动态监测 · React · Mapbox </strong>
+  <strong>🔥 Firelens. A Global Fire Dynamic Monitoring Platform. A One-Stop Solution for Multi-dimensional Hotspot Data</strong><br/>
+  <strong>🌏 全球火灾动态监测平台 · React · Mapbox · 多维热点数据一站式解决方案 </strong>
 </p>
 
 ## 💻 Installation
