@@ -39,10 +39,7 @@ The server will run on http://localhost:3000.
 ![map-city](https://github.com/user-attachments/assets/65a8f16f-098a-407c-a3b7-e7ede4a7be00)
 
  --- 
-
-![homepage-mobile](https://github.com/user-attachments/assets/e33b600a-a99f-4600-ad30-b1ae81435b4d)
-
-
  
+![homepage-mobile](https://github.com/user-attachments/assets/7e431968-1079-45ce-99c4-1b666f8ededf)
 
 
