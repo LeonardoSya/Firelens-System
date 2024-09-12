@@ -20,13 +20,29 @@ VITE_MAPBOX_ACCESS_TOKEN=your mapbox token
 
 The server will run on http://localhost:3000.
 
-![image](https://github.com/user-attachments/assets/cde8fb0a-63e6-4450-b72b-b2942e8968e8)
+![homepage-zh](https://github.com/user-attachments/assets/6189d7de-74ea-422a-9b85-04d097e750f7)
+
  --- 
-![微信图片_20240827170514](https://github.com/user-attachments/assets/50c192fe-91db-498c-bf75-bad076048004)
+ 
+![homepage-en](https://github.com/user-attachments/assets/4a67988f-035c-4741-a517-740b06f839b9)
+
  ---
-![微信图片_20240827102102](https://github.com/user-attachments/assets/e8743e87-a867-4f70-a8ac-68919736692e)
+
+![map-studio-img](https://github.com/user-attachments/assets/e3dfac87-dd23-4560-8eb3-a24be5ebda09)
+
  ---
-![微信图片_20240827102104](https://github.com/user-attachments/assets/5dbb7254-026a-46dc-be69-99247fe4b197)
+
+![map-satellite](https://github.com/user-attachments/assets/7d76fa66-2db0-4f90-8851-e0e4438f895e)
+
+ --- 
+
+![map-city](https://github.com/user-attachments/assets/65a8f16f-098a-407c-a3b7-e7ede4a7be00)
+
+ --- 
+
+![homepage-mobile](https://github.com/user-attachments/assets/e33b600a-a99f-4600-ad30-b1ae81435b4d)
+
+
  
 
 
