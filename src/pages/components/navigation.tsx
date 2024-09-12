@@ -22,7 +22,7 @@ export default function Navigation({ isOpen }: { isOpen: boolean }) {
         initial='hidden'
         animate={isOpen ? 'visible' : 'hidden'}
         variants={menu}
-        className='fixed inset-x-1 top-24 z-20 mx-7 rounded-2xl bg-slate-50 px-4 py-4 shadow-lg shadow-gray-300 ring-1 ring-gray-200 md:hidden dark:bg-gray-900 dark:shadow-orange-700/80 dark:ring-orange-700/80'
+        className='fixed inset-x-1 top-24 z-20 mx-7 rounded-2xl bg-slate-50 px-4 py-4 shadow-lg shadow-gray-300 ring-1 ring-gray-200 dark:bg-gray-900 dark:shadow-orange-700/80 dark:ring-orange-700/80 md:hidden'
       >
         <motion.li className='transform rounded-lg px-3 py-3 text-lg tracking-widest text-slate-950 duration-75 active:bg-slate-100 dark:font-semibold dark:text-neutral-200 dark:active:bg-gray-900'>
           <Link to='/'>{intl.formatMessage({ id: 'root.tab1' })}</Link>
