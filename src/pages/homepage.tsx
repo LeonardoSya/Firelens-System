@@ -6,6 +6,7 @@ import Earth from '@/pages/components/earth'
 import mapStudioImg from '@/assets/img/map-studio-img.png'
 import mapSatellite from '@/assets/img/map-satellite.png'
 import mapCity from '@/assets/img/map-city.png'
+import mapMobile from '@/assets/img/homepage-mobile.png'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
@@ -41,56 +42,63 @@ export default function Homepage() {
           >
             <h1
               style={{ userSelect: 'none' }}
-              className='m-2 text-balance font-tiny text-4xl font-medium tracking-wide text-neutral-950 sm:m-4 sm:text-6xl dark:text-gray-100'
+              className='m-2 text-balance font-tiny text-4xl font-medium tracking-wide text-neutral-950 dark:text-gray-100 sm:m-4 sm:text-6xl'
             >
               FIRELENS
             </h1>
             <h1
               style={{ userSelect: 'none' }}
-              className='mb-4 text-balance font-serif text-4xl font-medium tracking-tight text-neutral-950 sm:text-6xl dark:text-gray-100'
+              className='mb-4 text-balance font-serif text-4xl font-medium tracking-tight text-neutral-950 dark:text-gray-100 sm:text-6xl'
             >
               {intl.formatMessage({ id: 'home.title1' })}
             </h1>
             <h1
               style={{ userSelect: 'none' }}
-              className='text-balance font-serif text-4xl font-medium tracking-tight text-neutral-950 sm:text-6xl dark:text-gray-100'
+              className='text-balance font-serif text-4xl font-medium tracking-tight text-neutral-950 dark:text-gray-100 sm:text-6xl'
             >
               {intl.formatMessage({ id: 'home.title2' })}
             </h1>
             <p
               style={{ userSelect: 'none' }}
-              className='my-6 text-lg leading-tight tracking-wide text-neutral-600 sm:text-2xl sm:leading-normal dark:text-slate-400'
+              className='my-6 text-lg leading-tight tracking-wide text-neutral-600 dark:text-slate-400 sm:text-2xl sm:leading-normal'
             >
               {intl.formatMessage({ id: 'home.introduction' })}
             </p>
             <p
               style={{ userSelect: 'none' }}
-              className='my-6 leading-tight tracking-wide text-neutral-600 sm:text-xl sm:leading-normal dark:text-gray-600'
+              className='my-6 leading-tight tracking-wide text-neutral-600 dark:text-gray-600 sm:text-xl sm:leading-normal'
             >
               {intl.formatMessage({ id: 'home.team' })}
             </p>
           </motion.div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
-            <Slider {...settings} className='my-6 w-full shrink-0 rounded-xl lg:w-96'>
+            <Slider {...settings} className='my-6 w-full shrink-0 rounded-xl lg:w-[30rem]'>
               <div>
                 <img
                   src={mapStudioImg}
                   alt='img'
-                  className='h-64 w-full rounded-2xl object-cover lg:h-full'
+                  className='h-72 w-full rounded-2xl object-cover lg:h-full'
                 />
               </div>
               <div>
                 <img
                   src={mapSatellite}
                   alt='img'
-                  className='h-64 w-full rounded-2xl object-cover lg:h-full'
+                  className='h-72 w-full rounded-2xl object-cover lg:h-full'
                 />
               </div>
               <div>
                 <img
                   src={mapCity}
                   alt='img'
-                  className='h-64 w-full rounded-2xl object-cover lg:h-full'
+                  className='h-72 w-full rounded-2xl object-cover lg:h-full'
+                />
+              </div>
+              <div>
+                <img
+                  src={mapMobile}
+                  alt='img'
+                  className='h-72 w-full rounded-2xl object-cover lg:h-full'
                 />
               </div>
             </Slider>

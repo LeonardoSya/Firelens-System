@@ -2,8 +2,9 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   relative: true,
+  // darkMode: 'selector',
+  darkMode: 'class',
   theme: {
-    darkMode: 'selector',
     extend: {
       borderRadius: {
         't-4xl': '3rem',
