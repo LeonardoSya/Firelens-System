@@ -44,7 +44,7 @@ export default function Root() {
   }, [])
 
   return (
-    <div className='h-[120vh] bg-neutral-950 pt-6 dark:bg-gray-900'>
+    <div className='bg-neutral-950 pt-6 dark:bg-gray-900'>
       {/* back-header */}
       <header
         className={`-z-5 absolute w-full bg-neutral-950 from-gray-900 to-gray-950 dark:bg-gradient-to-b ${!isHeaderCollapsed && 'hidden'} h-full`}
