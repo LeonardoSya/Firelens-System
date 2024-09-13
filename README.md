@@ -4,14 +4,14 @@
 </p>
 
 ## 💻 Installation
-- Node.js (>=14.x)
+- Node.js (>=16.x)
 - npm (>=6.x)
 
 ```bash
 git clone https://github.com/LeonardoSya/Firelens-System.git
 cd Firelens-System
-npm install / yarn
-npm run dev / yarn dev
+npm install
+npm run dev
 ```
 Create a .env file in the root directory and add your [Mapbox](https://www.mapbox.com/) token
 ```bash
