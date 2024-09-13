@@ -12,6 +12,8 @@ import type { FirePoint, MapboxEvent } from '@/types/map.types'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
 
+const baseUrl = import.meta.env.VITE_BASE_URL
+
 const listItemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 },
@@ -124,7 +126,7 @@ const MyMap: React.FC = () => {
       const queryParams = new URLSearchParams(
         Object.entries(baseParams).filter(([_, value]) => value != null) as [string, string][],
       ).toString()
-      const url = `http://localhost:3001/api/global-48h-data?${queryParams}`
+      const url = `${baseUrl}/api/global-48h-data?${queryParams}`
 
       const response = await fetch(url, { signal: abortControllerRef.current.signal })
       const data = await response.json()
