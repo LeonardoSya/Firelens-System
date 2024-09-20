@@ -12,6 +12,7 @@ export interface FeatureProperties {
   bright_ti5: number
   frp: number
   daynight: string
+  ndvi: number
 }
 
 export interface Feature {
@@ -39,6 +40,7 @@ export interface FirePoint {
   daynight: boolean
   dateTime: string
   satellite: string
+  ndvi: number
 }
 
 export interface MapboxEvent extends mapboxgl.MapMouseEvent {
