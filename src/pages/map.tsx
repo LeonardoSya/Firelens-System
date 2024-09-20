@@ -203,6 +203,7 @@ const MyMap: React.FC = () => {
           daynight: properties.daynight === 'D',
           dateTime: dateTime,
           satellite: properties.satellite,
+          ndvi: properties.ndvi / 10000,
         })
         setFirePointId(properties.bright_ti4)
         map.current.flyTo({
@@ -330,6 +331,7 @@ const MyMap: React.FC = () => {
                 `Ti4通道亮度值 (开尔文)：${firePoint.bright_ti4}`,
                 `Ti5通道亮度值 (开尔文)：${firePoint.bright_ti5}`,
                 `火灾辐射功率 (兆瓦)：${firePoint.frp}`,
+                `受灾区域 NDVI：${firePoint.ndvi}`,
                 `受灾时间：${firePoint.dateTime}`,
                 `受灾时段：${firePoint.daynight ? '白天' : '夜晚'}`,
                 `监测卫星：${firePoint.satellite}`,
