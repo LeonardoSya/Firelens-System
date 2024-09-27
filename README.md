@@ -18,7 +18,7 @@ Create a .env file in the root directory and add your [Mapbox](https://www.mapbo
 VITE_MAPBOX_ACCESS_TOKEN=your mapbox token
 ```
 
-The server will run on http://localhost:3000.
+The server will run on http://localhost:5173.
 
 ![homepage-zh](https://github.com/user-attachments/assets/6189d7de-74ea-422a-9b85-04d097e750f7)
 
