@@ -42,7 +42,7 @@ export default function Homepage() {
           >
             <h1
               style={{ userSelect: 'none' }}
-              className='m-2 text-balance font-tiny text-4xl font-medium tracking-wide text-neutral-950 dark:text-gray-100 sm:m-4 sm:text-6xl'
+              className='m-2 text-balance font-tiny text-4xl font-medium tracking-wide text-neutral-950 dark:text-[#e54e1b] sm:m-4 sm:text-6xl'
             >
               FIRELENS
             </h1>
@@ -54,7 +54,7 @@ export default function Homepage() {
             </h1>
             <h1
               style={{ userSelect: 'none' }}
-              className='text-balance font-serif text-4xl font-medium tracking-tight text-neutral-950 dark:text-gray-100 sm:text-6xl'
+              className='mt-6 text-balance font-serif text-4xl font-medium tracking-tight text-neutral-950 dark:text-gray-100 sm:mt-10 sm:text-6xl'
             >
               {intl.formatMessage({ id: 'home.title2' })}
             </h1>

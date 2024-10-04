@@ -1,5 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
-import ErrorPage from '@/routes/error-page'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import Root from '@/pages/root'
 import Homepage from '@/pages/homepage'
 import MapView from '@/pages/map-view'
@@ -8,7 +7,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
-    errorElement: <ErrorPage />,
+    errorElement: <Navigate to='/' replace />,
     children: [
       {
         path: '/',
