@@ -5,7 +5,14 @@ import { setFilterParams } from '@/features/filter-slice'
 import { RootState } from '@/app/store'
 import RangeInput from '@/pages/components/range-input'
 
-const SideMenu: React.FC = () => {
+interface SideMenuProps {
+  toggleWindLayer: () => void;
+  // toggleHeatLayer?: () => void;
+}
+
+const SideMenu: React.FC<SideMenuProps> = props => {
+  const { toggleWindLayer } = props
+
   const dispatch = useAppDispatch()
   const filterParams = useAppSelector((state: RootState) => state.filter)
 
@@ -128,6 +135,30 @@ const SideMenu: React.FC = () => {
           onMinChange={value => handleFilterChange('minFrp', value)}
           onMaxChange={value => handleFilterChange('maxFrp', value)}
         />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.25, duration: 0.2 }}
+        className='ml-2 mt-4 flex items-center justify-between'
+      >
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={toggleWindLayer}
+          className='rounded-md border border-gray-800 bg-white px-3 py-2 text-sm transition-colors duration-200 hover:bg-gray-900 hover:text-white focus:border-gray-800 focus:outline-none focus:ring-0 dark:border-gray-800 dark:bg-gray-800 dark:text-white dark:focus:border-gray-800'
+        >
+          风场图层
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => {}}
+          className='rounded-md border border-gray-800 bg-white px-3 py-2 text-sm transition-colors duration-200 hover:bg-gray-900 hover:text-white focus:border-gray-800 focus:outline-none focus:ring-0 dark:border-gray-800 dark:bg-gray-800 dark:text-white dark:focus:border-gray-800'
+        >
+          热图图层
+        </motion.button>
       </motion.div>
     </div>
   )

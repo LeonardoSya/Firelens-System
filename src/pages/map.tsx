@@ -8,6 +8,7 @@ import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder' // @ts-ignore
 import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding'
 import { useAppSelector } from '@/app/redux-hooks'
 import { RootState } from '@/app/store'
+import SideMenu from '@/pages/components/side-menu'
 import type { FirePoint, MapboxEvent } from '@/types/map.types'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
@@ -32,8 +33,9 @@ const MyMap: React.FC = () => {
   const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false)
   const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false)
   const [firePoint, setFirePoint] = useState<FirePoint | null>(null)
-  const [firePointId, setFirePointId] = useState<number>(0)
+  const [firePointId, setFirePointId] = useState<number>(0) // 控制火点信息弹窗显示
   const [style, setStyle] = useState<string>('mapbox://styles/mapbox/standard')
+  const [showWindLayer, setShowWindLayer] = useState<boolean>(false)
   const filterParams = useAppSelector((state: RootState) => state.filter)
 
   // 初始化地图
@@ -57,8 +59,8 @@ const MyMap: React.FC = () => {
       map.current.setConfigProperty('basemap', 'show3dObjects', true)
     })
 
-    // 地图加载时 添加地图控件
     map.current.on('load', () => {
+      // 地图控件
       setIsMapLoaded(true)
       map.current.addControl(
         new MapboxGeocoder({
@@ -98,10 +100,14 @@ const MyMap: React.FC = () => {
   useEffect(() => {
     if (map.current && isMapLoaded) {
       map.current.setStyle(style)
-      map.current.on('style.load', () => {
-        map.current.setConfigProperty('basemap', 'lightPreset', 'dusk')
-        map.current.setConfigProperty('basemap', 'show3dObjects', true)
-      })
+      if (style === 'mapbox://styles/mapbox/standard') {
+        map.current.on('style.load', () => {
+          if (map.current.getConfigProperty('basemap')) {
+            map.current.setConfigProperty('basemap', 'lightPreset', 'dusk')
+            map.current.setConfigProperty('basemap', 'show3dObjects', true)
+          }
+        })
+      }
     }
   }, [style])
 
@@ -291,6 +297,144 @@ const MyMap: React.FC = () => {
     fetchDistrict()
   }, [firePoint])
 
+  // 风场图层切换
+  useEffect(() => {
+    if (!map.current || !isMapLoaded) return
+
+    const handleStyleLoad = () => {
+      setFirePointId(0)
+      if (showWindLayer) {
+        try {
+          if (!map.current.getSource('raster-array-source')) {
+            map.current.addSource('raster-array-source', {
+              type: 'raster-array',
+              url: 'mapbox://rasterarrayexamples.gfs-winds',
+              tileSize: 512,
+            })
+            if (!map.current.getLayer('wind-layer')) {
+              map.current.addLayer({
+                id: 'wind-layer',
+                type: 'raster-particle',
+                source: 'raster-array-source',
+                'source-layer': '10winds',
+                paint: {
+                  'raster-particle-speed-factor': 0.4,
+                  'raster-particle-fade-opacity-factor': 0.9,
+                  'raster-particle-reset-rate-factor': 0.4,
+                  'raster-particle-count': 4000,
+                  'raster-particle-max-speed': 40,
+                  'raster-particle-color': [
+                    'interpolate',
+                    ['linear'],
+                    ['raster-particle-speed'],
+                    1.5,
+                    'rgba(134,163,171,256)',
+                    2.5,
+                    'rgba(126,152,188,256)',
+                    4.12,
+                    'rgba(110,143,208,256)',
+                    4.63,
+                    'rgba(110,143,208,256)',
+                    6.17,
+                    'rgba(15,147,167,256)',
+                    7.72,
+                    'rgba(15,147,167,256)',
+                    9.26,
+                    'rgba(57,163,57,256)',
+                    10.29,
+                    'rgba(57,163,57,256)',
+                    11.83,
+                    'rgba(194,134,62,256)',
+                    13.37,
+                    'rgba(194,134,63,256)',
+                    14.92,
+                    'rgba(200,66,13,256)',
+                    16.46,
+                    'rgba(200,66,13,256)',
+                    18.0,
+                    'rgba(210,0,50,256)',
+                    20.06,
+                    'rgba(215,0,50,256)',
+                    21.6,
+                    'rgba(175,80,136,256)',
+                    23.66,
+                    'rgba(175,80,136,256)',
+                    25.21,
+                    'rgba(117,74,147,256)',
+                    27.78,
+                    'rgba(117,74,147,256)',
+                    29.32,
+                    'rgba(68,105,141,256)',
+                    31.89,
+                    'rgba(68,105,141,256)',
+                    33.44,
+                    'rgba(194,251,119,256)',
+                    42.18,
+                    'rgba(194,251,119,256)',
+                    43.72,
+                    'rgba(241,255,109,256)',
+                    48.87,
+                    'rgba(241,255,109,256)',
+                    50.41,
+                    'rgba(256,256,256,256)',
+                    57.61,
+                    'rgba(256,256,256,256)',
+                    59.16,
+                    'rgba(0,256,256,256)',
+                    68.93,
+                    'rgba(0,256,256,256)',
+                    69.44,
+                    'rgba(256,37,256,256)',
+                  ],
+                },
+              })
+            }
+            map.current.easeTo({
+              zoom: 2,
+              duration: 2000,
+            })
+            map.current.setFog({
+              'horizon-blend': 0.01,
+              'space-color': 'rgb(11, 11, 25)',
+              'star-intensity': 0.6,
+              color: 'rgb(11, 11, 25)',
+              'high-color': 'rgb(11, 11, 25)',
+            })
+          }
+        } catch (error) {
+          console.error('Error loading wind layer:', error)
+        }
+      } else {
+        if (map.current.getLayer('wind-layer')) {
+          map.current.removeLayer('wind-layer')
+        }
+        if (map.current.getSource('raster-array-source')) {
+          map.current.removeSource('raster-array-source')
+        }
+        map.current.setFog(null)
+        map.current.easeTo({
+          zoom: 5,
+          duration: 1500,
+        })
+      }
+    }
+
+    const newStyle = showWindLayer
+      ? 'mapbox://styles/mapbox/dark-v11'
+      : 'mapbox://styles/mapbox/standard'
+
+    if (map.current.getStyle().name !== newStyle) {
+      map.current.once('styledata', handleStyleLoad)
+      map.current.setStyle(newStyle)
+    } else {
+      handleStyleLoad()
+    }
+
+    return () => {
+      map.current.off('style.load', handleStyleLoad)
+    }
+  }, [showWindLayer])
+
   return (
     <>
       {/* 火点信息弹窗 */}
@@ -370,6 +514,8 @@ const MyMap: React.FC = () => {
           />
         </div>
       )}
+      {/* 侧边栏 */}
+      <SideMenu toggleWindLayer={() => setShowWindLayer(prev => !prev)} />
     </>
   )
 }
