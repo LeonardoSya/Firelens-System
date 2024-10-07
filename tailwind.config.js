@@ -12,6 +12,10 @@ export default {
       fontFamily: {
         tiny: ['Tiny5', 'sans-serif'],
         acme: ['Acme', 'sans-serif'],
+        montserrat: ['Montserrat', 'san-serif'],
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
     },
   },

@@ -19,7 +19,7 @@ export default function Earth() {
 
   const earthRef = useRef<THREE.Mesh>(null)
   const cloudsRef = useRef<THREE.Mesh>(null)
-  const [earthScale, setEarthScale] = useState([2.2, 2.2, 2.2])
+  const [earthScale, setEarthScale] = useState([2.5, 2.5, 2.5])
 
   useEffect(() => {
     // 设置初始缩放比例
@@ -46,7 +46,7 @@ export default function Earth() {
     <>
       {/* <ambientLight intensity={1} /> */}
       {/* 点光源 */}
-      <pointLight color='#f6f3ea' position={[4, 0, 4]} intensity={0.6} />
+      <pointLight color='#f6f3ea' position={[3, 0, 4]} intensity={0.8} />
       <Stars radius={200} depth={90} count={10000} factor={6} saturation={0} fade={true} />
       <mesh ref={cloudsRef}>
         <sphereGeometry args={[1.005, 32, 32]} />
