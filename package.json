@@ -11,6 +11,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@ant-design/charts": "^2.2.1",
+    "@antv/l7": "^2.22.1",
     "@formatjs/intl-locale": "^4.0.0",
     "@formatjs/intl-pluralrules": "^5.2.14",
     "@mapbox/mapbox-gl-geocoder": "^5.0.2",
@@ -21,6 +23,8 @@
     "@types/lodash": "^4.17.7",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
+    "csv-parser": "^3.0.0",
+    "csv-writer": "^1.6.0",
     "date-fns": "^3.6.0",
     "framer-motion": "^12.0.0-alpha.0",
     "lodash": "^4.17.21",

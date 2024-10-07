@@ -227,7 +227,7 @@ export default function Root() {
         </motion.div>
 
         {/* front-header */}
-        <header className={`pb-4 pt-10 ${isScrolled ? 'sticky top-0 z-50' : ''}`}>
+        <header className='pb-4 pt-10'>
           <div className='mx-auto max-w-7xl rounded-t-xl bg-white px-4 dark:bg-gray-950 sm:px-6 lg:px-8'>
             <motion.nav
               variants={headerContainerVariants}
@@ -383,7 +383,7 @@ export default function Root() {
           />
         )}
 
-        <div className='h-full dark:bg-gradient-to-b dark:from-gray-950 dark:to-slate-900'>
+        <div className='h-full dark:bg-gradient-radial dark:from-gray-900 dark:to-slate-950'>
           <Outlet />
         </div>
       </motion.div>
