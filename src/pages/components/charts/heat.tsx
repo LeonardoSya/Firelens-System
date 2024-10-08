@@ -22,6 +22,7 @@ const HeatMap: React.FC = () => {
           pitch: 43,
           accessToken: token,
         }),
+        logoVisible: false,
       })
 
       scene.on('loaded', async () => {

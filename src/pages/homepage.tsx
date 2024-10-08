@@ -1,11 +1,10 @@
+import { lazy, Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { useIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion' // @ts-ignore
 import Slider from 'react-slick'
 import Earth from '@/pages/components/earth'
-import ScatterPlot from '@/pages/components/charts/scatter'
-import HeatMap from '@/pages/components/charts/heat'
 import mapStudioImg from '@/assets/img/map-studio-img.png'
 import mapSatellite from '@/assets/img/map-satellite.png'
 import mapCity from '@/assets/img/map-city.png'
@@ -13,6 +12,11 @@ import mapMobile from '@/assets/img/homepage-mobile.png'
 import fireIcon from '@/assets/img/fire-icon.png'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
+
+const LazyHeatMap = lazy(() => import('@/pages/components/charts/heat'))
+const LazyAreaScatter = lazy(() => import('@/pages/components/charts/area'))
+const LazyTimeScatter = lazy(() => import('@/pages/components/charts/time'))
+const LazyCountryPie = lazy(() => import('@/pages/components/charts/pie'))
 
 const settings = {
   dots: true,
@@ -116,7 +120,8 @@ export default function Homepage() {
             className='flex flex-col items-center gap-4 text-center'
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
             <div className='flex items-center'>
               <img src={fireIcon} alt='fire-icon' className='h-16 w-auto sm:h-24' />
@@ -137,7 +142,8 @@ export default function Homepage() {
             <motion.button
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
               className='font-inherit group flex cursor-pointer items-center rounded-2xl border-2 border-slate-900 bg-gradient-to-r from-[#0f0c29] via-[#302b63] to-[#24243e] px-6 py-3 text-lg font-medium tracking-widest text-white transition-all duration-300 ease-in-out hover:shadow-lg'
             >
               <svg
@@ -158,11 +164,39 @@ export default function Homepage() {
           </Link>
           <motion.div
             initial={{ opacity: 0, y: 10 }}
+            viewport={{ once: true }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.2 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className='mt-8 flex flex-col items-center justify-center'
+          >
+            <p className='font-montserrat text-lg tracking-wider text-neutral-300 md:max-w-xl lg:max-w-4xl lg:text-xl'>
+              Firelens
+              基于高分热点数据产品，能够进行全球火灾发生时间模型的识别，如火灾频发的时段。4μm通道的火点亮度温度和火灾辐射功率（FRP）能够反映火灾强度，较高的亮度温度和较大的FRP值通常表示更严重的火灾。Firelens
+              提供的动态火灾数据可视化有助于用户了解不同地区、不同时间的火灾发生情况,为全球尺度的火灾管理和决策提供支持
+            </p>
+            <p className='mt-6 font-montserrat tracking-wider text-neutral-400'>
+              全球48h内特大火灾发生时间与火点亮度图
+            </p>
+            <Suspense fallback={<div>loading...</div>}>
+              <LazyTimeScatter />
+            </Suspense>
+            <div className='mt-12 flex w-full flex-col gap-4 lg:max-w-5xl lg:flex-row'>
+              <Suspense fallback={<div>loading...</div>}>
+                <LazyCountryPie />
+              </Suspense>
+              <Suspense fallback={<div>loading...</div>}>
+                <LazyAreaScatter />
+              </Suspense>
+            </div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.6 }}
             className='mb-2 mt-8 flex flex-col items-center justify-center'
           >
-            <p className='max-w-lg text-center font-montserrat text-lg tracking-wider md:max-w-xl lg:max-w-4xl lg:text-xl'>
+            <p className='max-w-lg font-montserrat text-lg tracking-wider text-neutral-300 md:max-w-xl lg:max-w-4xl lg:text-xl'>
               借助NDVI（归一化植被指数）进行火点筛选。NDVI使用近红外和红光波段进行计算，计算公式为(NIR-R)/(NIR+R)，能够反映植被的生长状态和覆盖程度。在区分植被与化工厂、城市热岛区域方面具有优势。通过将NDVI与火点检测算法相结合可以更精准地识别出真正的火灾点，减少因其他高温源（如城市热岛效应区域、工厂热源等）造成的误判
             </p>
             <p className='mt-6 font-montserrat tracking-wider text-neutral-400'>
@@ -171,12 +205,14 @@ export default function Homepage() {
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 10 }}
+            viewport={{ once: true }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.4 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
             className='flex flex-col items-center justify-center'
           >
-            <HeatMap />
-            {/* <ScatterPlot /> */}
+            <Suspense fallback={<div>loading...</div>}>
+              <LazyHeatMap />
+            </Suspense>
           </motion.div>
         </div>
       </div>

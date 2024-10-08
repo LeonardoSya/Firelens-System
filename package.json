@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ant-design/charts": "^2.2.1",
+    "@ant-design/plots": "^2.3.2",
     "@antv/l7": "^2.22.1",
     "@formatjs/intl-locale": "^4.0.0",
     "@formatjs/intl-pluralrules": "^5.2.14",
