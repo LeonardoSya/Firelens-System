@@ -2,7 +2,7 @@ import { Scatter } from '@ant-design/plots'
 import React from 'react'
 import countryData from '@/assets/data/country.json'
 
-const ScatterPlot: React.FC = () => {
+const AreaScatter: React.FC = () => {
   const config = {
     title: '火点数量与国土面积散点图',
     data: countryData,
@@ -10,7 +10,7 @@ const ScatterPlot: React.FC = () => {
     yField: 'counts',
     colorField: 'counts',
     shapeField: 'circle',
-    size: [4, 30],
+    sizeField: [4, 6],
     theme: 'dark',
     padding: [20, 20, 50, 50],
     scale: {
@@ -43,10 +43,10 @@ const ScatterPlot: React.FC = () => {
   }
 
   return (
-    <div className='h-96 w-full md:h-[40rem] md:w-3/4'>
+    <div className='h-96 w-full lg:h-[36rem] lg:w-1/2'>
       <Scatter {...config} />
     </div>
   )
 }
 
-export default ScatterPlot
+export default AreaScatter
