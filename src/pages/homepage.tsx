@@ -5,9 +5,10 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion' // @ts-ignore
 import Slider from 'react-slick'
 import Earth from '@/pages/components/earth'
-import mapStudioImg from '@/assets/img/map-studio-img.png'
+import mapImg from '@/assets/img/map.png'
 import mapSatellite from '@/assets/img/map-satellite.png'
 import mapCity from '@/assets/img/map-city.png'
+import mapWind from '@/assets/img/map-wind.png'
 import mapMobile from '@/assets/img/homepage-mobile.png'
 import fireIcon from '@/assets/img/fire-icon.png'
 import 'slick-carousel/slick/slick.css'
@@ -83,7 +84,7 @@ export default function Homepage() {
             <Slider {...settings} className='my-6 w-full shrink-0 rounded-xl lg:w-[30rem]'>
               <div>
                 <img
-                  src={mapStudioImg}
+                  src={mapImg}
                   alt='img'
                   className='h-72 w-full rounded-2xl object-cover lg:h-full'
                 />
@@ -91,6 +92,13 @@ export default function Homepage() {
               <div>
                 <img
                   src={mapSatellite}
+                  alt='img'
+                  className='h-72 w-full rounded-2xl object-cover lg:h-full'
+                />
+              </div>
+              <div>
+                <img
+                  src={mapWind}
                   alt='img'
                   className='h-72 w-full rounded-2xl object-cover lg:h-full'
                 />
@@ -197,7 +205,9 @@ export default function Homepage() {
             className='mb-2 mt-8 flex flex-col items-center justify-center'
           >
             <p className='max-w-lg font-montserrat text-lg tracking-wider text-neutral-300 md:max-w-xl lg:max-w-4xl lg:text-xl'>
-              Firelens 通过多元数据交叉实现了高质量上游火点数据质量控制<br />借助NDVI（归一化植被指数）进行火点筛选。NDVI使用近红外和红光波段进行计算，计算公式为(NIR-R)/(NIR+R)，能够反映植被的生长状态和覆盖程度。在区分植被与化工厂、城市热岛区域方面具有优势。通过将NDVI与火点检测算法相结合可以更精准地识别出真正的火灾点，减少因其他高温源（如城市热岛效应区域、工厂热源等）造成的误判
+              Firelens 通过多元数据交叉实现了高质量上游火点数据质量控制
+              <br />
+              借助NDVI（归一化植被指数）进行火点筛选。NDVI使用近红外和红光波段进行计算，计算公式为(NIR-R)/(NIR+R)，能够反映植被的生长状态和覆盖程度。在区分植被与化工厂、城市热岛区域方面具有优势。通过将NDVI与火点检测算法相结合可以更精准地识别出真正的火灾点，减少因其他高温源（如城市热岛效应区域、工厂热源等）造成的误判
             </p>
             <p className='mt-6 font-montserrat tracking-wider text-neutral-400'>
               江浙部分地区NDVI 3D蜂窝热力图 （ 2024年7月 ）

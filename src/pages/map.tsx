@@ -13,7 +13,7 @@ import type { FirePoint, MapboxEvent } from '@/types/map.types'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
 
-const baseUrl = import.meta.env.VITE_BASE_URL
+const baseUrl = import.meta.env.VITE_BASE_URL || 'http://localhost:3000'
 
 const listItemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -59,9 +59,11 @@ const MyMap: React.FC = () => {
       map.current.setConfigProperty('basemap', 'show3dObjects', true)
     })
 
+    let globeMinimap: any
     map.current.on('load', () => {
       // 地图控件
       setIsMapLoaded(true)
+
       map.current.addControl(
         new MapboxGeocoder({
           accessToken: mapboxgl.accessToken,
@@ -80,18 +82,34 @@ const MyMap: React.FC = () => {
           showAccuracyCircle: false,
         }),
       )
-      map.current.addControl(
-        new GlobeMinimap({
-          landColor: 'rgb(250,250,250)',
-          waterColor: 'rgba(3,7,18,.8)',
-        }),
-        'top-left',
-      )
+      globeMinimap = new GlobeMinimap({
+        landColor: 'rgb(250,250,250)',
+        waterColor: 'rgba(3,7,18,.8)',
+      })
+      map.current.addControl(globeMinimap, 'top-left')
     })
 
     return () => {
       if (map.current) {
-        map.current.remove()
+        map.current.getControls().forEach((control: any) => {
+          map.current.removeControl(control)
+        })
+        if (map.current.getStyle()) {
+          const layers = map.current.getStyle().layers
+          if (layers) {
+            layers.forEach((layer: any) => {
+              map.current.removeLayer(layer.id)
+            })
+          }
+        }
+        if (globeMinimap) {
+          map.current.removeControl(globeMinimap)
+        }
+        const sources = map.current.getStyle().sources
+        for (const sourceId in sources) {
+          map.current.removeSource(sourceId)
+        }
+        map.current.off()
       }
     }
   }, [])

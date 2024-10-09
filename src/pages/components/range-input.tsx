@@ -2,8 +2,8 @@ import React from 'react'
 
 interface RangeInputProps {
   label: string;
-  minValue?: number;
-  maxValue?: number;
+  minValue: number | null;
+  maxValue: number | null;
   defaultMinValue: number;
   defaultMaxValue: number;
   onMinChange: (value: string) => void;
