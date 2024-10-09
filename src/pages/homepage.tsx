@@ -209,11 +209,11 @@ export default function Homepage() {
               <br />
               借助NDVI（归一化植被指数）进行火点筛选。NDVI使用近红外和红光波段进行计算，计算公式为(NIR-R)/(NIR+R)，能够反映植被的生长状态和覆盖程度。在区分植被与化工厂、城市热岛区域方面具有优势。通过将NDVI与火点检测算法相结合可以更精准地识别出真正的火灾点，减少因其他高温源（如城市热岛效应区域、工厂热源等）造成的误判
             </p>
-            <p className='mt-6 font-montserrat tracking-wider text-neutral-400'>
+            {/* <p className='mt-6 font-montserrat tracking-wider text-neutral-400'>
               江浙部分地区NDVI 3D蜂窝热力图 （ 2024年7月 ）
-            </p>
+            </p> */}
           </motion.div>
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: 10 }}
             viewport={{ once: true }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -223,7 +223,7 @@ export default function Homepage() {
             <Suspense fallback={<div>loading...</div>}>
               <LazyHeatMap />
             </Suspense>
-          </motion.div>
+          </motion.div> */}
         </div>
       </div>
       {/* footer */}

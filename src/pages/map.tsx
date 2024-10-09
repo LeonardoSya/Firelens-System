@@ -91,9 +91,6 @@ const MyMap: React.FC = () => {
 
     return () => {
       if (map.current) {
-        map.current.getControls().forEach((control: any) => {
-          map.current.removeControl(control)
-        })
         if (map.current.getStyle()) {
           const layers = map.current.getStyle().layers
           if (layers) {
@@ -101,9 +98,6 @@ const MyMap: React.FC = () => {
               map.current.removeLayer(layer.id)
             })
           }
-        }
-        if (globeMinimap) {
-          map.current.removeControl(globeMinimap)
         }
         const sources = map.current.getStyle().sources
         for (const sourceId in sources) {

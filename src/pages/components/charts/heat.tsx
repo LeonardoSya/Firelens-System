@@ -5,16 +5,15 @@ import { Mapbox } from '@antv/l7-maps'
 const token = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
 
 const HeatMap: React.FC = () => {
-  const mapContainer = useRef<HTMLDivElement>(null)
+  const heatmapContainer = useRef<HTMLDivElement>(null)
+  const sceneRef = useRef<Scene | null>(null)
 
   useEffect(() => {
-    if (!mapContainer.current) return
-
-    let scene: Scene | null = null
+    if (!heatmapContainer.current) return
 
     const initScene = async () => {
       const scene = new Scene({
-        id: mapContainer.current,
+        id: heatmapContainer.current,
         map: new Mapbox({
           style: 'mapbox://styles/mapbox/dark-v11',
           center: [120.13383079335335, 29.651873105004427],
@@ -64,13 +63,19 @@ const HeatMap: React.FC = () => {
     initScene()
 
     return () => {
-      if (scene) scene.destroy()
+      if (sceneRef.current) {
+        sceneRef.current.destroy()
+        sceneRef.current = null
+        console.log('destory heat map!')
+      }
+      sceneRef.current = null
+      heatmapContainer.current = null
     }
   }, [])
 
   return (
     <div className='flex w-full items-center justify-center'>
-      <div ref={mapContainer} className='relative h-96 w-full md:h-[30rem] md:w-3/4' />
+      <div ref={heatmapContainer} className='relative h-96 w-full md:h-[30rem] md:w-3/4' />
     </div>
   )
 }
