@@ -20,26 +20,40 @@ VITE_MAPBOX_ACCESS_TOKEN=your mapbox token
 
 The server will run on http://localhost:5173.
 
-![homepage-zh](https://github.com/user-attachments/assets/6189d7de-74ea-422a-9b85-04d097e750f7)
-
- --- 
- 
-![homepage-en](https://github.com/user-attachments/assets/4a67988f-035c-4741-a517-740b06f839b9)
+![homepage-zh](https://github.com/user-attachments/assets/db72ca41-434b-4aff-a7ce-670d7a07633b)
 
  ---
 
-![map-studio-img](https://github.com/user-attachments/assets/e3dfac87-dd23-4560-8eb3-a24be5ebda09)
+![homepage-2](https://github.com/user-attachments/assets/6dc228b1-3075-4f43-92ad-ee8dd91f5e91)
 
  ---
 
-![map-satellite](https://github.com/user-attachments/assets/7d76fa66-2db0-4f90-8851-e0e4438f895e)
+![homepage-3](https://github.com/user-attachments/assets/4fdb6e8c-0adc-4122-a95e-a22657929d43)
 
- --- 
+ ---
 
-![map-city](https://github.com/user-attachments/assets/65a8f16f-098a-407c-a3b7-e7ede4a7be00)
+![homepage-4](https://github.com/user-attachments/assets/be52da9f-0de8-4f53-974f-92be98e18b45)
 
- --- 
- 
-![homepage-mobile](https://github.com/user-attachments/assets/7e431968-1079-45ce-99c4-1b666f8ededf)
+ ---
 
+![homepage-5](https://github.com/user-attachments/assets/646d6023-2dbb-44b2-8af0-542dadc33f53)
 
+ ---
+
+![map](https://github.com/user-attachments/assets/44a61c92-cc9c-47fd-b174-35352fdeadfc)
+
+ ---
+
+![map-satellite](https://github.com/user-attachments/assets/acae59c0-b058-4854-a4fd-a5fd5fda3214)
+
+ ---
+
+![map-city](https://github.com/user-attachments/assets/17b7b06f-2603-4fec-b9db-8e61127bbc02)
+
+ ---
+
+![map-wind](https://github.com/user-attachments/assets/91a338b5-014d-46e7-80c5-4fe24daa5743)
+
+ ---
+
+![homepage-mobile](https://github.com/user-attachments/assets/b8f7f833-1b7c-4afa-b1e3-faad2148f53e)
