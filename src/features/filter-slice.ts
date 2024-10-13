@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface FilterState {
+export interface FilterState {
   confidence: string | null
   minBrightTi4: number | null
   maxBrightTi4: number | null
