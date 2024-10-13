@@ -91,19 +91,20 @@ const MyMap: React.FC = () => {
 
     return () => {
       if (map.current) {
-        if (map.current.getStyle()) {
-          const layers = map.current.getStyle().layers
-          if (layers) {
-            layers.forEach((layer: any) => {
-              map.current.removeLayer(layer.id)
-            })
-          }
-        }
-        const sources = map.current.getStyle().sources
-        for (const sourceId in sources) {
-          map.current.removeSource(sourceId)
-        }
-        map.current.off()
+        // if (map.current.getStyle()) {
+        //   const layers = map.current.getStyle().layers
+        //   if (layers) {
+        //     layers.forEach((layer: any) => {
+        //       map.current.removeLayer(layer.id)
+        //     })
+        //   }
+        // }
+        // const sources = map.current.getStyle().sources
+        // for (const sourceId in sources) {
+        //   map.current.removeSource(sourceId)
+        // }
+        // map.current.off()
+        map.current.remove()
       }
     }
   }, [])
@@ -448,7 +449,7 @@ const MyMap: React.FC = () => {
   }, [showWindLayer])
 
   return (
-    <>
+    <div>
       {/* 火点信息弹窗 */}
       <AnimatePresence>
         {firePointId !== 0 && (
@@ -502,18 +503,17 @@ const MyMap: React.FC = () => {
         )}
       </AnimatePresence>
       {/* 地图 */}
-      <div ref={mapContainer} className='absolute left-0 h-full w-full'>
-        <div
-          className='absolute left-0 top-0 z-10 h-24 w-24 cursor-pointer'
-          onClick={() =>
-            setStyle(prev =>
-              prev === 'mapbox://styles/mapbox/standard'
-                ? 'mapbox://styles/mapbox/standard-satellite'
-                : 'mapbox://styles/mapbox/standard',
-            )
-          }
-        />
-      </div>
+      <div ref={mapContainer} className='absolute left-0 h-full w-full' />
+      <div
+        className='relative left-0 top-0 z-10 h-24 w-24 cursor-pointer'
+        onClick={() =>
+          setStyle(prev =>
+            prev === 'mapbox://styles/mapbox/standard'
+              ? 'mapbox://styles/mapbox/standard-satellite'
+              : 'mapbox://styles/mapbox/standard',
+          )
+        }
+      />
       {/* 加载指示器 */}
       {isDataLoaded && (
         <div className='fixed inset-0 z-50 flex items-center justify-center bg-opacity-50'>
@@ -528,7 +528,7 @@ const MyMap: React.FC = () => {
       )}
       {/* 侧边栏 */}
       <SideMenu toggleWindLayer={() => setShowWindLayer(prev => !prev)} />
-    </>
+    </div>
   )
 }
 
