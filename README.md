@@ -4,7 +4,7 @@
 </p>
 
 ## 💻 Installation
-- Node.js (>=16.x)
+- Node.js (>=18.17)
 - npm (>=6.x)
 
 ```bash
